@@ -280,6 +280,23 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Dynamic Email Construction
+    const aboutEmailLink = document.getElementById('about-email');
+    const contactEmailLink = document.getElementById('contact-email');
+    const emailUser = 'nekoslevin';
+    const emailDomain = 'gmail.com';
+    const email = emailUser + '@' + emailDomain;
+
+    if (aboutEmailLink) {
+        aboutEmailLink.href = 'mailto:' + email;
+        aboutEmailLink.textContent = email;
+    }
+
+    if (contactEmailLink) {
+        contactEmailLink.href = 'mailto:' + email;
+        contactEmailLink.textContent = email;
+    }
+
     // Dark Mode Toggle
     const darkModeToggle = document.createElement('div');
     darkModeToggle.innerHTML = `
@@ -416,3 +433,4 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
