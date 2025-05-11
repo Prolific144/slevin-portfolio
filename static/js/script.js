@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Mobile Menu Toggle: Handles opening and closing the mobile navigation menu
+    // Mobile Menu Toggle
     const menuToggle = document.querySelector('.menu-toggle');
     const closeMenu = document.querySelector('.close-menu');
     const navLinks = document.querySelector('.nav-links');
@@ -12,20 +12,19 @@ document.addEventListener('DOMContentLoaded', function() {
         navLinks.classList.remove('active');
     });
 
-    // Close mobile menu when clicking on a link
     document.querySelectorAll('.nav-links a').forEach(link => {
         link.addEventListener('click', () => {
             navLinks.classList.remove('active');
         });
     });
 
-    // Sticky Header: Adds 'scrolled' class to header when scrolling past 100px
+    // Sticky Header
     const header = document.querySelector('header');
     window.addEventListener('scroll', () => {
         header.classList.toggle('scrolled', window.scrollY > 100);
     });
 
-    // Typing Animation: Creates a typing effect for the hero section's role descriptions
+    // Typing Animation
     const typedTextSpan = document.querySelector('.typed-text');
     const cursorSpan = document.querySelector('.cursor');
 
@@ -64,7 +63,128 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (textArray.length) setTimeout(type, newTextDelay + 250);
 
-    // Portfolio Filter: Filters portfolio items based on category buttons
+    // Services Slider
+    const sliderWrapper = document.querySelector('.services-slider-wrapper');
+    const serviceSlides = document.querySelectorAll('.service-slide');
+    const servicesPrev = document.querySelector('.slider-prev');
+    const servicesNext = document.querySelector('.slider-next');
+    const servicesPause = document.querySelector('.slider-pause');
+    const servicesSlider = document.querySelector('.services-slider');
+    let currentSlide = 0;
+    let isPaused = false;
+    let autoSlideInterval = null;
+    let isAnimating = false;
+
+    function startAutoSlide() {
+        if (!isPaused && !autoSlideInterval) {
+            autoSlideInterval = setInterval(nextSlide, 6000);
+        }
+    }
+
+    function stopAutoSlide() {
+        if (autoSlideInterval) {
+            clearInterval(autoSlideInterval);
+            autoSlideInterval = null;
+        }
+    }
+
+    function updateSlider() {
+        if (isAnimating) return;
+        isAnimating = true;
+
+        // Update active class and opacity
+        serviceSlides.forEach((slide, index) => {
+            slide.classList.toggle('active', index === currentSlide);
+        });
+
+        // Update transform
+        const offset = -currentSlide * 100;
+        sliderWrapper.style.transform = `translateX(${offset}%)`;
+
+        setTimeout(() => {
+            isAnimating = false;
+        }, 500);
+    }
+
+    function nextSlide() {
+        if (isAnimating) return;
+        currentSlide = (currentSlide + 1) % serviceSlides.length;
+        updateSlider();
+        if (!isPaused) {
+            stopAutoSlide();
+            startAutoSlide();
+        }
+    }
+
+    function prevSlide() {
+        if (isAnimating) return;
+        currentSlide = (currentSlide - 1 + serviceSlides.length) % serviceSlides.length;
+        updateSlider();
+        if (!isPaused) {
+            stopAutoSlide();
+            startAutoSlide();
+        }
+    }
+
+    function togglePause() {
+        isPaused = !isPaused;
+        servicesPause.innerHTML = isPaused ? '<i class="fas fa-play"></i>' : '<i class="fas fa-pause"></i>';
+        if (isPaused) {
+            stopAutoSlide();
+        } else {
+            startAutoSlide();
+        }
+    }
+
+    // Initialize slider
+    function initSlider() {
+        updateSlider();
+        startAutoSlide();
+    }
+
+    if (servicesNext && servicesPrev) {
+        servicesNext.addEventListener('click', nextSlide);
+        servicesPrev.addEventListener('click', prevSlide);
+    }
+
+    if (servicesPause) {
+        servicesPause.addEventListener('click', togglePause);
+    }
+
+    // Pause auto-slide on hover
+    if (servicesSlider) {
+        servicesSlider.addEventListener('mouseenter', () => {
+            if (!isPaused) stopAutoSlide();
+        });
+
+        servicesSlider.addEventListener('mouseleave', () => {
+            if (!isPaused) startAutoSlide();
+        });
+    }
+
+    // Swipe support for touch devices
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    if (servicesSlider) {
+        servicesSlider.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        servicesSlider.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            if (touchStartX - touchEndX > 50) {
+                nextSlide();
+            } else if (touchEndX - touchStartX > 50) {
+                prevSlide();
+            }
+        });
+    }
+
+    // Initialize slider
+    initSlider();
+
+    // Portfolio Filter
     const filterButtons = document.querySelectorAll('.filter-btn');
     const portfolioItems = document.querySelectorAll('.portfolio-item');
 
@@ -72,9 +192,9 @@ document.addEventListener('DOMContentLoaded', function() {
         button.addEventListener('click', () => {
             filterButtons.forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
-            
+
             const filterValue = button.getAttribute('data-filter');
-            
+
             portfolioItems.forEach(item => {
                 if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
                     item.style.display = 'block';
@@ -85,35 +205,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Testimonial Slider: Manages the testimonial carousel with next/prev controls
-    const testimonialSlides = document.querySelectorAll('.testimonial-slide');
-    const prevButton = document.querySelector('.slider-prev');
-    const nextButton = document.querySelector('.slider-next');
-    let currentSlide = 0;
-
-    function showSlide(index) {
-        testimonialSlides.forEach(slide => slide.classList.remove('active'));
-        testimonialSlides[index].classList.add('active');
-    }
-
-    function nextSlide() {
-        currentSlide = (currentSlide + 1) % testimonialSlides.length;
-        showSlide(currentSlide);
-    }
-
-    function prevSlide() {
-        currentSlide = (currentSlide - 1 + testimonialSlides.length) % testimonialSlides.length;
-        showSlide(currentSlide);
-    }
-
-    nextButton.addEventListener('click', nextSlide);
-    prevButton.addEventListener('click', prevSlide);
-
-    setInterval(nextSlide, 5000);
-
-    // Back to Top Button: Shows/hides button based on scroll position and scrolls to top
+    // Back to Top Button
     const backToTopButton = document.querySelector('.back-to-top');
-    
+
     window.addEventListener('scroll', () => {
         if (window.pageYOffset > 300) {
             backToTopButton.classList.add('active');
@@ -130,9 +224,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Skill Bars Animation: Animates skill progress bars when About section is in view
+    // Skill Bars Animation
     const skillBars = document.querySelectorAll('.progress-line span');
-    
+
     function animateSkillBars() {
         skillBars.forEach(bar => {
             const width = bar.parentElement.classList.contains('design') ? '95%' :
@@ -158,14 +252,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
     observer.observe(aboutSection);
 
-    // Smooth Scrolling: Enables smooth scrolling for anchor links
+    // Smooth Scrolling
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             e.preventDefault();
-            
+
             const targetId = this.getAttribute('href');
             if (targetId === '#') return;
-            
+
             const targetElement = document.querySelector(targetId);
             if (targetElement) {
                 window.scrollTo({
@@ -176,7 +270,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Form Submission: Displays a confirmation alert on form submit (placeholder)
+    // Form Submission
     const contactForm = document.querySelector('.contact-form');
     if (contactForm) {
         contactForm.addEventListener('submit', function(e) {
@@ -186,7 +280,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Dark Mode Toggle: Toggles dark mode and persists setting in localStorage
+    // Dark Mode Toggle
     const darkModeToggle = document.createElement('div');
     darkModeToggle.innerHTML = `
         <button id="darkModeToggle" class="btn" style="position: fixed; bottom: 30px; left: 30px; z-index: 999; padding: 10px 15px;">
@@ -221,7 +315,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Project Modal: Displays project details in a modal when portfolio item is clicked
+    // Project Modal
     const portfolioItemsModal = document.querySelectorAll('.portfolio-item');
     const modal = document.getElementById('projectModal');
     const closeModal = document.querySelector('.close-modal');
@@ -276,12 +370,12 @@ document.addEventListener('DOMContentLoaded', function() {
             item.addEventListener('click', () => {
                 const projectTitle = item.querySelector('.portfolio-overlay h3')?.textContent;
                 const projectImage = item.querySelector('img')?.src;
-                
+
                 if (projectTitle && projectImage) {
                     modalImage.src = projectImage || 'static/images/placeholder.jpg';
                     modalTitle.textContent = projectTitle;
                     modalDescription.textContent = projects[projectTitle]?.description || "No description available.";
-                    
+
                     modalTech.innerHTML = '';
                     if (projects[projectTitle]?.technologies) {
                         projects[projectTitle].technologies.forEach(tech => {
@@ -294,17 +388,16 @@ document.addEventListener('DOMContentLoaded', function() {
                         li.textContent = "No technologies listed.";
                         modalTech.appendChild(li);
                     }
-                    
+
                     modalProjectLink.href = projects[projectTitle]?.liveLink || "#";
                     modalProjectCode.href = projects[projectTitle]?.codeLink || "#";
-                    
+
                     modal.classList.add('show');
                     document.body.style.overflow = 'hidden';
                 }
             });
         });
 
-        // View Code Alert: Shows pop-up when "View Code" is clicked
         modalProjectCode.addEventListener('click', (e) => {
             e.preventDefault();
             alert('Please contact Mr. Slevin to get started!');
