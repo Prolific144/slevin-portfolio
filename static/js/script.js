@@ -184,6 +184,51 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize slider
     initSlider();
 
+    // Form Submission with Formspree
+    const contactForm = document.querySelector('.contact-form');
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(contactForm);
+            fetch(contactForm.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Thank you for your message! I will get back to you soon.');
+                    contactForm.reset();
+                } else {
+                    alert('There was an error sending your message. Please try again.');
+                }
+            })
+            .catch(error => {
+                alert('There was an error sending your message. Please try again.');
+                console.error('Form submission error:', error);
+            });
+        });
+    }
+
+    // Dynamic Email Construction
+    const aboutEmailLink = document.getElementById('about-email');
+    const contactEmailLink = document.getElementById('contact-email');
+    const emailUser = 'nekoslevin';
+    const emailDomain = 'gmail.com';
+    const email = emailUser + '@' + emailDomain;
+
+    if (aboutEmailLink) {
+        aboutEmailLink.href = 'mailto:' + email;
+        aboutEmailLink.textContent = email;
+    }
+
+    if (contactEmailLink) {
+        contactEmailLink.href = 'mailto:' + email;
+        contactEmailLink.textContent = email;
+    }
+
     // Portfolio Filter
     const filterButtons = document.querySelectorAll('.filter-btn');
     const portfolioItems = document.querySelectorAll('.portfolio-item');
@@ -269,33 +314,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-
-    // Form Submission
-    const contactForm = document.querySelector('.contact-form');
-    if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Thank you for your message! I will get back to you soon.');
-            this.reset();
-        });
-    }
-
-    // Dynamic Email Construction
-    const aboutEmailLink = document.getElementById('about-email');
-    const contactEmailLink = document.getElementById('contact-email');
-    const emailUser = 'nekoslevin';
-    const emailDomain = 'gmail.com';
-    const email = emailUser + '@' + emailDomain;
-
-    if (aboutEmailLink) {
-        aboutEmailLink.href = 'mailto:' + email;
-        aboutEmailLink.textContent = email;
-    }
-
-    if (contactEmailLink) {
-        contactEmailLink.href = 'mailto:' + email;
-        contactEmailLink.textContent = email;
-    }
 
     // Dark Mode Toggle
     const darkModeToggle = document.createElement('div');
@@ -433,4 +451,3 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
-
