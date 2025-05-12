@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Found | Slevin's Portfolio</title>
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="404 Page Not Found - Slevin Onono's Portfolio. Return to the homepage or explore other sections.">
+    <meta name="keywords" content="Slevin Onono, 404, portfolio, error">
+    <meta name="author" content="Slevin Onono">
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="404 - Slevin Onono's Portfolio">
+    <meta property="og:description" content="Oops! The page you're looking for doesn't exist. Return to Slevin's portfolio homepage.">
+    <meta property="og:image" content="https://prolific144.github.io/slevin-portfolio/static/images/hero-image.jpg">
+    <meta property="og:url" content="https://prolific144.github.io/slevin-portfolio/404.html">
+    <meta property="og:type" content="website">
+    <!-- Preload Resources -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;800&display=swap" as="style">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="static/images/favicon.ico">
+    <!-- Cloudflare Web Analytics -->
+    <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "YOUR_TOKEN"}'></script>
+    <style>
+        /* Modern CSS Variables */
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --accent: #f72585;
+            --light: #f8f9fa;
+            --dark: #14213d;
+            --bg-gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+            --font-main: 'Poppins', sans-serif;
+        }
+
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: var(--bg-gradient);
+            color: var(--light);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Animated Wave Background */
+        .bg-waves {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 20%;
+            z-index: -1;
+            opacity: 0.7;
+        }
+
+        .bg-waves path {
+            animation: waveAnimation 15s linear infinite;
+        }
+
+        /* Error Container */
+        .error-container {
+            text-align: center;
+            padding: 2rem;
+            max-width: 800px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 404 Text */
+        .error-code {
+            font-size: clamp(6rem, 15vw, 10rem);
+            font-weight: 800;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            line-height: 1;
+            animation: bounceIn 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        /* Error Message */
+        .error-message {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            margin: 1rem 0 2rem;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s 1s ease-out forwards;
+        }
+
+        /* Character Animations */
+        .char {
+            display: inline-block;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .char:hover {
+            color: var(--accent);
+            text-shadow: 0 0 10px rgba(247, 37, 133, 0.7);
+            transform: translateY(-5px) scale(1.2);
+            animation: glitch 0.3s linear 2;
+        }
+
+        /* Button Styles */
+        .home-btn {
+            margin: 1.5rem 0;
+            padding: 12px 30px;
+            background: var(--light);
+            color: var(--primary);
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 0;
+            animation: fadeIn 0.5s 1.5s ease-out forwards;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .home-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .home-btn:active {
+            transform: scale(0.95);
+        }
+
+        .home-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .home-btn:hover::after {
+            transform: translateX(100%);
+        }
+
+        /* Suggestions Box */
+        .suggestions {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            opacity: 0;
+            animation: fadeIn 0.5s 2s ease-out forwards;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .suggestions h3 {
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .suggestions ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem 1rem;
+        }
+
+        .suggestions a {
+            color: var(--light);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .suggestions a:hover {
+            color: var(--accent);
+        }
+
+        .suggestions a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .suggestions a:hover::after {
+            width: 100%;
+        }
+
+        /* Countdown Timer */
+        .countdown {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            color: var(--light);
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255,255,255,0.2);
+            transform: rotate(30deg);
+        }
+
+        /* 3D Floating Cube */
+        .floating-cube {
+            width: 50px;
+            height: 50px;
+            background: rgba(255,255,255,0.1);
+            position: absolute;
+            transform-style: preserve-3d;
+            pointer-events: none;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 5px;
+            transition: transform 0.1s linear;
+            z-index: -1;
+        }
+
+        /* Dark Mode */
+        body.dark-mode {
+            --primary: #4895ef;
+            --secondary: #0f0f1a;
+            --light: #1a1a2e;
+            --dark: #f8f9fa;
+        }
+
+        /* Keyframe Animations */
+        @keyframes waveAnimation {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.1) rotateX(90deg); opacity: 0; }
+            60% { transform: scale(1.2) rotateX(-10deg); opacity: 1; }
+            80% { transform: scale(0.9) rotateX(5deg); }
+            100% { transform: scale(1) rotateX(0deg); opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        @keyframes glitch {
+            0%, 100% { transform: translate(0); text-shadow: none; }
+            25% { transform: translate(-3px, 3px); text-shadow: -2px -2px 0 var(--accent), 2px 2px 0 #4cc9f0; }
+            50% { transform: translate(3px, -3px); }
+            75% { transform: translate(-3px, 3px); }
+        }
+
+        /* Fallback Particles (CSS-based) */
+        .particles-fallback {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            animation: particleMove 10s linear infinite;
+        }
+
+        @keyframes particleMove {
+            0% { transform: translateY(100vh) scale(1); opacity: 0.5; }
+            100% { transform: translateY(-100vh) scale(0.5); opacity: 0; }
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .error-code { font-size: 8rem; }
+            .error-message { font-size: 2rem; }
+            .suggestions ul { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" aria-label="Toggle theme" id="themeToggle">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <!-- Animated Background -->
+    <svg class="bg-waves" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+        <path fill="rgba(255,255,255,0.1)" d="M0,192L48,197.3C96,203,192,213,288,229.3C384,245,480,267,576,250.7C672,235,768,181,864,181.3C960,181,1056,235,1152,234.7C1248,235,1344,181,1392,154.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+    </svg>
+
+    <!-- Main Content -->
+    <div class="error-container">
+        <h1 class="error-code" id="errorCode">404</h1>
+        <p class="error-message" id="errorMessage">Page Not Found</p>
+        <button class="home-btn" onclick="trackInteraction('return_home'); window.location.href='https://prolific144.github.io/slevin-portfolio/'">
+            <i class="fas fa-home"></i> Return Home
+        </button>
+        
+        <!-- Dynamic Suggestions -->
+        <div class="suggestions" id="suggestions">
+            <h3>Try these pages instead:</h3>
+            <ul id="suggestionsList"></ul>
+        </div>
+        
+        <p class="countdown" id="countdown">Redirecting in 15 seconds...</p>
+    </div>
+
+    <!-- 3D Floating Cube -->
+    <div class="floating-cube"></div>
+
+    <!-- Fallback CSS Particles -->
+    <div class="particles-fallback" id="particles-fallback"></div>
+
+    <script>
+        // DOM Elements
+        const errorCode = document.getElementById('errorCode');
+        const errorMessage = document.getElementById('errorMessage');
+        const themeToggle = document.getElementById('themeToggle');
+        const countdownEl = document.getElementById('countdown');
+        const suggestionsList = document.getElementById('suggestionsList');
+        const particlesFallback = document.getElementById('particles-fallback');
+
+        // Cloudflare Web Analytics Tracking
+        function trackInteraction(action) {
+            if (typeof window.cfAnalytics !== 'undefined' && window.cfAnalytics.logEvent) {
+                window.cfAnalytics.logEvent({
+                    name: '404_interaction',
+                    properties: { action: action, page: window.location.pathname }
+                });
+            } else {
+                console.warn('Cloudflare Web Analytics not initialized');
+            }
+        }
+
+        // Track 404 Page View
+        document.addEventListener('DOMContentLoaded', () => {
+            trackInteraction('page_view');
+        });
+
+        // Split Text into Animated Characters
+        function animateText(element) {
+            const text = element.textContent;
+            element.innerHTML = '';
+            text.split('').forEach((char, i) => {
+                const span = document.createElement('span');
+                span.className = 'char';
+                span.textContent = char === ' ' ? '\u00A0' : char;
+                span.style.animationDelay = `${i * 0.05}s`;
+                element.appendChild(span);
+            });
+        }
+
+        // Floating Cube Animation
+        function initFloatingCube() {
+            const cube = document.querySelector('.floating-cube');
+            document.addEventListener('mousemove', (e) => {
+                const x = e.clientX - 25;
+                const y = e.clientY - 25;
+                const rotateX = (e.clientY / window.innerHeight - 0.5) * 60;
+                const rotateY = (e.clientX / window.innerWidth - 0.5) * 60;
+                cube.style.transform = `translate(${x}px, ${y}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            });
+        }
+
+        // Theme Toggle
+        function initThemeToggle() {
+            const isDark = localStorage.getItem('darkMode') === 'true';
+            if (isDark) {
+                document.body.classList.add('dark-mode');
+                themeToggle.querySelector('i').classList.replace('fa-moon', 'fa-sun');
+            }
+            themeToggle.addEventListener('click', () => {
+                document.body.classList.toggle('dark-mode');
+                const icon = themeToggle.querySelector('i');
+                icon.classList.toggle('fa-moon');
+                icon.classList.toggle('fa-sun');
+                localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+                trackInteraction('theme_toggle');
+            });
+        }
+
+        // Countdown Redirect
+        function initCountdown() {
+            let seconds = 15;
+            let isPaused = false;
+            const countdown = setInterval(() => {
+                if (!isPaused) {
+                    countdownEl.textContent = `Redirecting in ${--seconds} seconds...`;
+                    if (seconds <= 0) {
+                        clearInterval(countdown);
+                        window.location.href = 'https://prolific144.github.io/slevin-portfolio/';
+                    }
+                }
+            }, 1000);
+
+            // Pause countdown on meaningful interactions
+            document.querySelectorAll('.home-btn, .suggestions a').forEach(el => {
+                el.addEventListener('click', () => {
+                    isPaused = true;
+                    countdownEl.textContent = 'Redirect paused';
+                });
+            });
+        }
+
+        // Dynamic Page Suggestions
+        function initSuggestions() {
+            const popularPages = [
+                { name: 'Home', url: 'https://prolific144.github.io/slevin-portfolio/' },
+                { name: 'About', url: 'https://prolific144.github.io/slevin-portfolio/#about' },
+                { name: 'Portfolio', url: 'https://prolific144.github.io/slevin-portfolio/#portfolio' },
+                { name: 'Services', url: 'https://prolific144.github.io/slevin-portfolio/#services' },
+                { name: 'Contact', url: 'https://prolific144.github.io/slevin-portfolio/#contact' }
+            ];
+            popularPages.forEach(page => {
+                const li = document.createElement('li');
+                li.innerHTML = `<a href="${page.url}" onclick="trackInteraction('suggestion_${page.name.toLowerCase()}')">${page.name}</a>`;
+                suggestionsList.appendChild(li);
+            });
+        }
+
+        // CSS-based Fallback Particles
+        function initFallbackParticles() {
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.width = `${Math.random() * 3 + 2}px`;
+                particle.style.height = particle.style.width;
+                particle.style.left = `${Math.random() * 100}vw`;
+                particle.style.animationDelay = `${Math.random() * 10}s`;
+                particlesFallback.appendChild(particle);
+            }
+        }
+
+        // Load Particle.js Asynchronously
+        function loadParticles() {
+            const script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js';
+            script.async = true;
+            script.onload = () => {
+                particlesJS('particles-fallback', {
+                    particles: {
+                        number: { value: 60, density: { enable: true, value_area: 800 } },
+                        color: { value: "#ffffff" },
+                        shape: { type: "circle" },
+                        opacity: { value: 0.5, random: true },
+                        size: { value: 3, random: true },
+                        line_linked: { 
+                            enable: true, 
+                            distance: 150, 
+                            color: "#ffffff", 
+                            opacity: 0.3, 
+                            width: 1 
+                        },
+                        move: {
+                            enable: true,
+                            speed: 2,
+                            direction: "none",
+                            random: true,
+                            straight: false,
+                            out_mode: "out"
+                        }
+                    },
+                    interactivity: {
+                        detect_on: "canvas",
+                        events: {
+                            onhover: { enable: true, mode: "repulse" },
+                            onclick: { enable: true, mode: "push" }
+                        }
+                    }
+                });
+                trackInteraction('particles_loaded');
+            };
+            script.onerror = () => {
+                console.warn('Failed to load Particles.js - using CSS fallback');
+                initFallbackParticles();
+                trackInteraction('particles_failed');
+            };
+            document.head.appendChild(script);
+        }
+
+        // Initialize Features
+        animateText(errorCode);
+        animateText(errorMessage);
+        initFloatingCube();
+        initThemeToggle();
+        initCountdown();
+        initSuggestions();
+        loadParticles();
+
+        // Track Errors
+        window.addEventListener('error', (e) => {
+            trackInteraction('error', { message: e.message, file: e.filename, line: e.lineno });
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93e9522e6f454551',t:'MTc0NzA0NjY2OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
