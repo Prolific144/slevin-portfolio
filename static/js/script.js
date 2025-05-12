@@ -450,15 +450,12 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-
     // Track CV Downloads
     function trackCVDownload() {
         if (typeof window.cfAnalytics !== 'undefined' && window.cfAnalytics.logEvent) {
             window.cfAnalytics.logEvent({
                 name: 'cv_download',
-                properties: {
-                    file: 'Slevin_Resume.pdf'
-                }
+                properties: { file: 'Slevin_Resume.pdf' }
             });
         } else {
             console.warn('Cloudflare Web Analytics not initialized');
