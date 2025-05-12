@@ -366,8 +366,8 @@ document.addEventListener('DOMContentLoaded', function() {
             "Revenue Trend Analysis": {
                 description: "Developed interactive Tableau dashboards to visualize revenue trends, improving decision-making by 30% during KRA internship.",
                 technologies: ["Tableau", "Excel", "SQL"],
-                liveLink: "#",
-                codeLink: "#"
+                liveLink: "https://app-sales-dashboard-dy7t3qgwckyxpxfvc4rmrc.streamlit.app",
+                codeLink: "https://github.com/Prolific144/streamlit-sales-dashboard"
             },
             "Financial Forecasting Model": {
                 description: "Built a Python-based predictive model to forecast financial trends, enhancing budget planning accuracy.",
