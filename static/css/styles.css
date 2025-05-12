@@ -1140,6 +1140,5 @@ footer {
     border-color: #2d2d42;
     color: var(--text-color);
 }
-.email-obfuscated:not([data-decoded]){
-    opacity: o
-}
+
+
