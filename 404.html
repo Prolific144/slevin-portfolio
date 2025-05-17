@@ -3,536 +3,489 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Page Not Found | Slevin's Portfolio</title>
-    <!-- SEO Meta Tags -->
-    <meta name="description" content="404 Page Not Found - Slevin Onono's Portfolio. Return to the homepage or explore other sections.">
-    <meta name="keywords" content="Slevin Onono, 404, portfolio, error">
+    <meta name="description" content="404 Page Not Found - Slevin Onono's Portfolio">
+    <meta name="keywords" content="Slevin Onono, 404, Data Analyst, Statistician, Web Developer, Portfolio">
     <meta name="author" content="Slevin Onono">
-    <!-- Open Graph Tags -->
-    <meta property="og:title" content="404 - Slevin Onono's Portfolio">
-    <meta property="og:description" content="Oops! The page you're looking for doesn't exist. Return to Slevin's portfolio homepage.">
-    <meta property="og:image" content="https://prolific144.github.io/slevin-portfolio/static/images/hero-image.jpg">
-    <meta property="og:url" content="https://prolific144.github.io/slevin-portfolio/404.html">
-    <meta property="og:type" content="website">
-    <!-- Preload Resources -->
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;800&display=swap" as="style">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="icon" type="image/x-icon" href="static/images/favicon.ico">
-    <!-- Cloudflare Web Analytics -->
-    <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "f2796d503f1342a79567c93308550234"}'></script>
+    <title>404 - Page Not Found | Slevin Onono</title>
+    <link rel="stylesheet" href="static/css/styles.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preload" href="static/images/error-bg.jpg" as="image">
+    <link rel="preload" href="static/images/placeholder.jpg" as="image">
     <style>
-        /* Modern CSS Variables */
-        :root {
-            --primary: #4361ee;
-            --secondary: #3a0ca3;
-            --accent: #f72585;
-            --light: #f8f9fa;
-            --dark: #14213d;
-            --bg-gradient: linear-gradient(135deg, var(--primary), var(--secondary));
-            --font-main: 'Poppins', sans-serif;
-        }
-
-        /* Base Styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: var(--font-main);
+        /* 404-Specific Styles */
+        .error-section {
             min-height: 100vh;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
             align-items: center;
-            background: var(--bg-gradient);
-            color: var(--light);
-            overflow: hidden;
+            justify-content: center;
             position: relative;
+            background: var(--bg-light) url('static/images/error-bg.jpg') no-repeat center/cover;
+            overflow: hidden;
+            padding: 80px 20px;
         }
 
-        /* Animated Wave Background */
-        .bg-waves {
+        .error-section::before {
+            content: '';
             position: absolute;
-            bottom: 0;
+            top: 0;
             left: 0;
             width: 100%;
-            height: 20%;
-            z-index: -1;
+            height: 100%;
+            background: var(--gradient);
             opacity: 0.7;
-        }
-
-        .bg-waves path {
-            animation: waveAnimation 15s linear infinite;
-        }
-
-        /* Error Container */
-        .error-container {
-            text-align: center;
-            padding: 2rem;
-            max-width: 800px;
-            position: relative;
             z-index: 1;
         }
 
-        /* 404 Text */
-        .error-code {
-            font-size: clamp(6rem, 15vw, 10rem);
-            font-weight: 800;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            line-height: 1;
-            animation: bounceIn 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-        }
-
-        /* Error Message */
-        .error-message {
-            font-size: clamp(1.5rem, 4vw, 2.5rem);
-            margin: 1rem 0 2rem;
-            opacity: 0;
-            transform: translateY(30px);
-            animation: fadeInUp 0.8s 1s ease-out forwards;
-        }
-
-        /* Character Animations */
-        .char {
-            display: inline-block;
-            transition: all 0.3s ease;
+        .error-content {
             position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 800px;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            animation: fadeIn 1s ease;
+            will-change: transform, opacity;
         }
 
-        .char:hover {
-            color: var(--accent);
-            text-shadow: 0 0 10px rgba(247, 37, 133, 0.7);
-            transform: translateY(-5px) scale(1.2);
-            animation: glitch 0.3s linear 2;
+        .dark-mode .error-content {
+            background: rgba(26, 26, 46, 0.95);
+            color: var(--text-color);
         }
 
-        /* Button Styles */
-        .home-btn {
-            margin: 1.5rem 0;
-            padding: 12px 30px;
-            background: var(--light);
-            color: var(--primary);
-            border: none;
-            border-radius: 50px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            opacity: 0;
-            animation: fadeIn 0.5s 1.5s ease-out forwards;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        .error-graphic {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 20px;
             position: relative;
-            overflow: hidden;
+            animation: float 4s ease-in-out infinite;
         }
 
-        .home-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-        }
-
-        .home-btn:active {
-            transform: scale(0.95);
-        }
-
-        .home-btn::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
+        .error-graphic svg {
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transform: translateX(-100%);
-            transition: transform 0.6s ease;
+            fill: var(--primary-color);
+            filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.2));
         }
 
-        .home-btn:hover::after {
-            transform: translateX(100%);
+        .dark-mode .error-graphic svg {
+            fill: var(--primary-color);
         }
 
-        /* Suggestions Box */
-        .suggestions {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 1.5rem;
-            margin-top: 2rem;
-            opacity: 0;
-            animation: fadeIn 0.5s 2s ease-out forwards;
-            border: 1px solid rgba(255,255,255,0.2);
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
         }
 
-        .suggestions h3 {
-            margin-bottom: 0.5rem;
+        .error-code {
+            font-size: 6rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .error-title {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--dark-color);
+        }
+
+        .error-message {
             font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: var(--text-light);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
-        .suggestions ul {
+        .error-actions {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .redirect-timer {
+            font-size: 1rem;
+            color: var(--text-color);
+            margin-bottom: 20px;
+        }
+
+        .redirect-timer span {
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .suggested-links {
+            margin-top: 30px;
+        }
+
+        .suggested-links h3 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        .suggested-links ul {
             list-style: none;
             display: flex;
             flex-wrap: wrap;
+            gap: 15px;
             justify-content: center;
-            gap: 0.5rem 1rem;
         }
 
-        .suggestions a {
-            color: var(--light);
-            text-decoration: none;
-            transition: all 0.3s ease;
+        .suggested-links li {
             position: relative;
         }
 
-        .suggestions a:hover {
-            color: var(--accent);
+        .suggested-links a {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--bg-light);
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            color: var(--dark-color);
+            transition: var(--transition);
         }
 
-        .suggestions a::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--accent);
-            transition: width 0.3s ease;
+        .suggested-links a:hover {
+            background: var(--primary-color);
+            color: #fff;
+            transform: translateY(-3px);
+            box-shadow: 0 0 15px var(--glow-color);
         }
 
-        .suggestions a:hover::after {
-            width: 100%;
+        .dark-mode .suggested-links a {
+            background: var(--light-color);
         }
 
-        /* Countdown Timer */
-        .countdown {
-            margin-top: 1rem;
-            font-size: 0.9rem;
-            opacity: 0.8;
+        .dark-mode .suggested-links a:hover {
+            background: var(--primary-color);
+            color: #fff;
         }
 
-        /* Theme Toggle */
-        .theme-toggle {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(255,255,255,0.1);
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            color: var(--light);
-            transition: all 0.3s ease;
-            z-index: 10;
-        }
-
-        .theme-toggle:hover {
-            background: rgba(255,255,255,0.2);
-            transform: rotate(30deg);
-        }
-
-        /* 3D Floating Cube */
-        .floating-cube {
-            width: 50px;
-            height: 50px;
-            background: rgba(255,255,255,0.1);
-            position: absolute;
-            transform-style: preserve-3d;
-            pointer-events: none;
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255,255,255,0.3);
-            border-radius: 5px;
-            transition: transform 0.1s linear;
-            z-index: -1;
-        }
-
-        /* Dark Mode */
-        body.dark-mode {
-            --primary: #4895ef;
-            --secondary: #0f0f1a;
-            --light: #1a1a2e;
-            --dark: #f8f9fa;
-        }
-
-        /* Keyframe Animations */
-        @keyframes waveAnimation {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-
-        @keyframes bounceIn {
-            0% { transform: scale(0.1) rotateX(90deg); opacity: 0; }
-            60% { transform: scale(1.2) rotateX(-10deg); opacity: 1; }
-            80% { transform: scale(0.9) rotateX(5deg); }
-            100% { transform: scale(1) rotateX(0deg); opacity: 1; }
-        }
-
-        @keyframes fadeInUp {
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes fadeIn {
-            to { opacity: 1; }
-        }
-
-        @keyframes glitch {
-            0%, 100% { transform: translate(0); text-shadow: none; }
-            25% { transform: translate(-3px, 3px); text-shadow: -2px -2px 0 var(--accent), 2px 2px 0 #4cc9f0; }
-            50% { transform: translate(3px, -3px); }
-            75% { transform: translate(-3px, 3px); }
-        }
-
-        /* Fallback Particles (CSS-based) */
-        .particles-fallback {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        .particle {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.5);
-            border-radius: 50%;
-            animation: particleMove 10s linear infinite;
-        }
-
-        @keyframes particleMove {
-            0% { transform: translateY(100vh) scale(1); opacity: 0.5; }
-            100% { transform: translateY(-100vh) scale(0.5); opacity: 0; }
+        /* Parallax Effect */
+        .error-section[data-parallax] {
+            background-attachment: fixed;
         }
 
         /* Responsive Adjustments */
         @media (max-width: 768px) {
-            .error-code { font-size: 8rem; }
-            .error-message { font-size: 2rem; }
-            .suggestions ul { flex-direction: column; }
+            .error-code {
+                font-size: 4rem;
+            }
+
+            .error-title {
+                font-size: 2rem;
+            }
+
+            .error-graphic {
+                width: 150px;
+                height: 150px;
+            }
+
+            .error-content {
+                padding: 20px;
+            }
+
+            .error-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .error-code {
+                font-size: 3rem;
+            }
+
+            .error-title {
+                font-size: 1.5rem;
+            }
+
+            .error-message {
+                font-size: 1rem;
+            }
+
+            .suggested-links ul {
+                flex-direction: column;
+                align-items: center;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Theme Toggle -->
-    <button class="theme-toggle" aria-label="Toggle theme" id="themeToggle">
-        <i class="fas fa-moon"></i>
-    </button>
+    <div class="custom-cursor"></div>
+    <header>
+        <nav class="container">
+            <div class="logo">
+                <a href="index.html">Slevin<span>.</span></a>
+            </div>
+            <ul class="nav-links" aria-expanded="false">
+                <li><a href="index.html#home">Home</a></li>
+                <li><a href="index.html#skills">Skills</a></li>
+                <li><a href="index.html#portfolio">Projects</a></li>
+                <li><a href="index.html#contact" class="contact-btn">Contact</a></li>
+            </ul>
+            <button class="dark-mode-toggle" aria-label="Toggle dark mode"><i class="fas fa-moon"></i></button>
+            <div class="menu-toggle" aria-label="Open menu"><i class="fas fa-bars"></i></div>
+            <div class="close-menu" aria-label="Close menu"><i class="fas fa-times"></i></div>
+        </nav>
+    </header>
 
-    <!-- Animated Background -->
-    <svg class="bg-waves" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
-        <path fill="rgba(255,255,255,0.1)" d="M0,192L48,197.3C96,203,192,213,288,229.3C384,245,480,267,576,250.7C672,235,768,181,864,181.3C960,181,1056,235,1152,234.7C1248,235,1344,181,1392,154.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
-    </svg>
-
-    <!-- Main Content -->
-    <div class="error-container">
-        <h1 class="error-code" id="errorCode">404</h1>
-        <p class="error-message" id="errorMessage">Page Not Found</p>
-        <button class="home-btn" onclick="trackInteraction('return_home'); window.location.href='https://prolific144.github.io/slevin-portfolio/'">
-            <i class="fas fa-home"></i> Return Home
-        </button>
-        
-        <!-- Dynamic Suggestions -->
-        <div class="suggestions" id="suggestions">
-            <h3>Try these pages instead:</h3>
-            <ul id="suggestionsList"></ul>
+    <section class="error-section" data-parallax>
+        <div class="container">
+            <div class="error-content" data-aos="zoom-in" role="alert">
+                <div class="error-graphic">
+                    <svg viewBox="0 0 100 100" aria-hidden="true">
+                        <circle cx="50" cy="50" r="45" stroke="var(--primary-color)" stroke-width="5" fill="none"/>
+                        <text x="50" y="60" font-size="30" text-anchor="middle" fill="var(--primary-color)">404</text>
+                    </svg>
+                </div>
+                <h1 class="error-code">404</h1>
+                <h2 class="error-title">Page Not Found</h2>
+                <p class="error-message">It looks like you've wandered off the path. The page you're looking for doesn't exist or has been moved. Let's guide you back to something awesome!</p>
+                <div class="error-actions">
+                    <a href="index.html" class="btn ripple" aria-label="Return to homepage">Return Home</a>
+                    <a href="index.html#contact" class="btn secondary ripple" aria-label="Contact Slevin Onono">Contact Me</a>
+                    <a href="Slevin_Resume.pdf" download class="btn secondary ripple" onclick="trackCVDownload()" aria-label="Download Slevin Onono's resume">Download Resume</a>
+                </div>
+                <div class="redirect-timer" aria-live="polite">
+                    <p>Redirecting to homepage in <span id="countdown">15</span> seconds...</p>
+                </div>
+                <div class="suggested-links" data-aos="fade-up" data-aos-delay="200">
+                    <h3>Explore These Pages:</h3>
+                    <ul>
+                        <li><a href="index.html#home" aria-label="Go to Home section">Home</a></li>
+                        <li><a href="index.html#skills" aria-label="Go to Skills section">Skills</a></li>
+                        <li><a href="index.html#portfolio" aria-label="Go to Projects section">Projects</a></li>
+                        <li><a href="index.html#contact" aria-label="Go to Contact section">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
-        
-        <p class="countdown" id="countdown">Redirecting in 15 seconds...</p>
-    </div>
+    </section>
 
-    <!-- 3D Floating Cube -->
-    <div class="floating-cube"></div>
+    <footer id="contact">
+        <div class="footer-content container">
+            <div class="footer-logo">
+                <a href="index.html">Slevin<span>.</span></a>
+            </div>
+            <div class="footer-links">
+                <a href="index.html#home">Home</a>
+                <a href="index.html#skills">Skills</a>
+                <a href="index.html#portfolio">Projects</a>
+                <a href="index.html#contact" class="contact-btn">Contact</a>
+            </div>
+            <div class="social-links">
+                <a href="#" aria-label="Visit Slevin Onono's LinkedIn profile"><i class="fab fa-linkedin"></i></a>
+                <a href="#" aria-label="Visit Slevin Onono's GitHub profile"><i class="fab fa-github"></i></a>
+                <a href="#" aria-label="Visit Slevin Onono's Twitter profile"><i class="fab fa-twitter"></i></a>
+            </div>
+            <div class="footer-copyright">
+                <p>© 2025 Slevin Onono. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
 
-    <!-- Fallback CSS Particles -->
-    <div class="particles-fallback" id="particles-fallback"></div>
+    <a href="#" class="back-to-top" aria-label="Scroll to top"><i class="fas fa-arrow-up"></i></a>
 
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        // DOM Elements
-        const errorCode = document.getElementById('errorCode');
-        const errorMessage = document.getElementById('errorMessage');
-        const themeToggle = document.getElementById('themeToggle');
-        const countdownEl = document.getElementById('countdown');
-        const suggestionsList = document.getElementById('suggestionsList');
-        const particlesFallback = document.getElementById('particles-fallback');
-
-        // Cloudflare Web Analytics Tracking
-        function trackInteraction(action) {
-            if (typeof window.cfAnalytics !== 'undefined' && window.cfAnalytics.logEvent) {
-                window.cfAnalytics.logEvent({
-                    name: '404_interaction',
-                    properties: { action: action, page: window.location.pathname }
-                });
-            } else {
-                console.warn('Cloudflare Web Analytics not initialized');
-            }
-        }
-
-        // Track 404 Page View
+        // Initialize when DOM is fully loaded
         document.addEventListener('DOMContentLoaded', () => {
-            trackInteraction('page_view');
-        });
+            // Initialize AOS for scroll animations
+            AOS.init({ duration: 1000, once: true, easing: 'ease-out' });
 
-        // Split Text into Animated Characters
-        function animateText(element) {
-            const text = element.textContent;
-            element.innerHTML = '';
-            text.split('').forEach((char, i) => {
-                const span = document.createElement('span');
-                span.className = 'char';
-                span.textContent = char === ' ' ? '\u00A0' : char;
-                span.style.animationDelay = `${i * 0.05}s`;
-                element.appendChild(span);
-            });
-        }
+            // Mobile Menu: Toggle navigation menu for mobile devices
+            const menuToggle = document.querySelector('.menu-toggle');
+            const closeMenu = document.querySelector('.close-menu');
+            const navLinks = document.querySelector('.nav-links');
 
-        // Floating Cube Animation
-        function initFloatingCube() {
-            const cube = document.querySelector('.floating-cube');
-            document.addEventListener('mousemove', (e) => {
-                const x = e.clientX - 25;
-                const y = e.clientY - 25;
-                const rotateX = (e.clientY / window.innerHeight - 0.5) * 60;
-                const rotateY = (e.clientX / window.innerWidth - 0.5) * 60;
-                cube.style.transform = `translate(${x}px, ${y}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-            });
-        }
+            if (menuToggle && closeMenu && navLinks) {
+                menuToggle.addEventListener('click', () => {
+                    navLinks.classList.add('active');
+                    navLinks.setAttribute('aria-expanded', 'true');
+                    menuToggle.setAttribute('aria-expanded', 'true');
+                });
 
-        // Theme Toggle
-        function initThemeToggle() {
-            const isDark = localStorage.getItem('darkMode') === 'true';
-            if (isDark) {
-                document.body.classList.add('dark-mode');
-                themeToggle.querySelector('i').classList.replace('fa-moon', 'fa-sun');
+                closeMenu.addEventListener('click', () => {
+                    navLinks.classList.remove('active');
+                    navLinks.setAttribute('aria-expanded', 'false');
+                    menuToggle.setAttribute('aria-expanded', 'false');
+                });
+
+                document.querySelectorAll('.nav-links a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        navLinks.classList.remove('active');
+                        navLinks.setAttribute('aria-expanded', 'false');
+                        menuToggle.setAttribute('aria-expanded', 'false');
+                    });
+                });
             }
-            themeToggle.addEventListener('click', () => {
-                document.body.classList.toggle('dark-mode');
-                const icon = themeToggle.querySelector('i');
-                icon.classList.toggle('fa-moon');
-                icon.classList.toggle('fa-sun');
-                localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
-                trackInteraction('theme_toggle');
-            });
-        }
 
-        // Countdown Redirect
-        function initCountdown() {
-            let seconds = 15;
-            let isPaused = false;
-            const countdown = setInterval(() => {
-                if (!isPaused) {
-                    countdownEl.textContent = `Redirecting in ${--seconds} seconds...`;
-                    if (seconds <= 0) {
-                        clearInterval(countdown);
-                        window.location.href = 'https://prolific144.github.io/slevin-portfolio/';
-                    }
+            // Sticky Header: Add 'scrolled' class to header when scrolling past 100px
+            const header = document.querySelector('header');
+            window.addEventListener('scroll', () => {
+                if (header) {
+                    header.classList.toggle('scrolled', window.scrollY > 100);
                 }
-            }, 1000);
+            });
 
-            // Pause countdown on meaningful interactions
-            document.querySelectorAll('.home-btn, .suggestions a').forEach(el => {
-                el.addEventListener('click', () => {
-                    isPaused = true;
-                    countdownEl.textContent = 'Redirect paused';
+            // Custom Cursor: Position custom cursor on mouse move
+            const customCursor = document.querySelector('.custom-cursor');
+            if (customCursor) {
+                document.addEventListener('mousemove', (e) => {
+                    customCursor.style.left = `${e.clientX}px`;
+                    customCursor.style.top = `${e.clientY}px`;
+                });
+
+                document.querySelectorAll('.btn, .suggested-links a').forEach(item => {
+                    item.addEventListener('mouseenter', () => {
+                        customCursor.classList.add('active');
+                    });
+                    item.addEventListener('mouseleave', () => {
+                        customCursor.classList.remove('active');
+                    });
+                });
+            }
+
+            // Ripple Effect for Buttons
+            document.querySelectorAll('.btn.ripple').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const rect = button.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    button.style.setProperty('--ripple-x', `${x}px`);
+                    button.style.setProperty('--ripple-y', `${y}px`);
                 });
             });
-        }
 
-        // Dynamic Page Suggestions
-        function initSuggestions() {
-            const popularPages = [
-                { name: 'Home', url: 'https://prolific144.github.io/slevin-portfolio/' },
-                { name: 'About', url: 'https://prolific144.github.io/slevin-portfolio/#about' },
-                { name: 'Portfolio', url: 'https://prolific144.github.io/slevin-portfolio/#portfolio' },
-                { name: 'Services', url: 'https://prolific144.github.io/slevin-portfolio/#services' },
-                { name: 'Contact', url: 'https://prolific144.github.io/slevin-portfolio/#contact' }
-            ];
-            popularPages.forEach(page => {
-                const li = document.createElement('li');
-                li.innerHTML = `<a href="${page.url}" onclick="trackInteraction('suggestion_${page.name.toLowerCase()}')">${page.name}</a>`;
-                suggestionsList.appendChild(li);
-            });
-        }
+            // Dark Mode: Toggle and persist dark mode theme
+            const darkModeToggle = document.querySelector('.dark-mode-toggle');
+            if (darkModeToggle) {
+                if (localStorage.getItem('darkMode') === 'enabled') {
+                    document.body.classList.add('dark-mode');
+                    darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                    darkModeToggle.setAttribute('aria-label', 'Switch to light mode');
+                }
 
-        // CSS-based Fallback Particles
-        function initFallbackParticles() {
-            for (let i = 0; i < 20; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.width = `${Math.random() * 3 + 2}px`;
-                particle.style.height = particle.style.width;
-                particle.style.left = `${Math.random() * 100}vw`;
-                particle.style.animationDelay = `${Math.random() * 10}s`;
-                particlesFallback.appendChild(particle);
+                darkModeToggle.addEventListener('click', () => {
+                    document.body.classList.toggle('dark-mode');
+                    const isDarkMode = document.body.classList.contains('dark-mode');
+                    darkModeToggle.innerHTML = isDarkMode ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+                    darkModeToggle.setAttribute('aria-label', isDarkMode ? 'Switch to light mode' : 'Switch to dark mode');
+                    localStorage.setItem('darkMode', isDarkMode ? 'enabled' : 'disabled');
+                });
             }
-        }
 
-        // Load Particle.js Asynchronously
-        function loadParticles() {
-            const script = document.createElement('script');
-            script.src = 'https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js';
-            script.async = true;
-            script.onload = () => {
-                particlesJS('particles-fallback', {
-                    particles: {
-                        number: { value: 60, density: { enable: true, value_area: 800 } },
-                        color: { value: "#ffffff" },
-                        shape: { type: "circle" },
-                        opacity: { value: 0.5, random: true },
-                        size: { value: 3, random: true },
-                        line_linked: { 
-                            enable: true, 
-                            distance: 150, 
-                            color: "#ffffff", 
-                            opacity: 0.3, 
-                            width: 1 
-                        },
-                        move: {
-                            enable: true,
-                            speed: 2,
-                            direction: "none",
-                            random: true,
-                            straight: false,
-                            out_mode: "out"
-                        }
-                    },
-                    interactivity: {
-                        detect_on: "canvas",
-                        events: {
-                            onhover: { enable: true, mode: "repulse" },
-                            onclick: { enable: true, mode: "push" }
-                        }
+            // Back to Top: Show/hide button and scroll to top
+            const backToTopButton = document.querySelector('.back-to-top');
+            if (backToTopButton) {
+                window.addEventListener('scroll', () => {
+                    backToTopButton.classList.toggle('active', window.pageYOffset > 300);
+                });
+
+                backToTopButton.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
+
+            // Countdown Timer: Auto-redirect to homepage after 15 seconds
+            const countdownElement = document.getElementById('countdown');
+            let timeLeft = 15;
+
+            if (countdownElement) {
+                const countdownInterval = setInterval(() => {
+                    timeLeft--;
+                    countdownElement.textContent = timeLeft;
+                    if (timeLeft <= 0) {
+                        clearInterval(countdownInterval);
+                        window.location.href = 'index.html';
+                    }
+                }, 1000);
+            }
+
+            // Smooth Scrolling: Redirect to index.html with hash for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    window.location.href = `index.html${targetId}`;
+                });
+            });
+
+            // Lazy Load Images: Add fade-in effect
+            const lazyImages = document.querySelectorAll('img.lazy-load');
+            const imageObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.classList.add('loaded');
+                        imageObserver.unobserve(img);
                     }
                 });
-                trackInteraction('particles_loaded');
-            };
-            script.onerror = () => {
-                console.warn('Failed to load Particles.js - using CSS fallback');
-                initFallbackParticles();
-                trackInteraction('particles_failed');
-            };
-            document.head.appendChild(script);
-        }
+            }, { threshold: 0.1 });
 
-        // Initialize Features
-        animateText(errorCode);
-        animateText(errorMessage);
-        initFloatingCube();
-        initThemeToggle();
-        initCountdown();
-        initSuggestions();
-        loadParticles();
+            lazyImages.forEach(img => {
+                img.onerror = () => {
+                    img.src = 'static/images/placeholder.jpg';
+                    img.alt = 'Placeholder Image';
+                    img.classList.add('loaded');
+                };
+                imageObserver.observe(img);
+            });
 
-        // Track Errors
-        window.addEventListener('error', (e) => {
-            trackInteraction('error', { message: e.message, file: e.filename, line: e.lineno });
+            // Parallax Effect: Subtle background movement on scroll
+            const errorSection = document.querySelector('.error-section');
+            if (errorSection) {
+                window.addEventListener('scroll', () => {
+                    const scrollPosition = window.pageYOffset;
+                    errorSection.style.backgroundPositionY = `${scrollPosition * 0.3}px`;
+                });
+            }
+
+            // Track CV Downloads: Log CV download events
+            window.trackCVDownload = function() {
+                if (typeof window.cfAnalytics !== 'undefined' && window.cfAnalytics.logEvent) {
+                    window.cfAnalytics.logEvent({
+                        name: 'cv_download',
+                        properties: { file: 'Slevin_Resume.pdf' }
+                    });
+                } else {
+                    console.warn('Cloudflare Web Analytics not initialized');
+                }
+            };
+
+            // Accessibility: Focus management on page load
+            const errorContent = document.querySelector('.error-content');
+            if (errorContent) {
+                errorContent.focus();
+            }
+
+            // Keyboard Navigation: Close mobile menu on Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && navLinks.classList.contains('active')) {
+                    navLinks.classList.remove('active');
+                    navLinks.setAttribute('aria-expanded', 'false');
+                    menuToggle.setAttribute('aria-expanded', 'false');
+                }
+            });
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93e9522e6f454551',t:'MTc0NzA0NjY2OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</body>
 </html>
