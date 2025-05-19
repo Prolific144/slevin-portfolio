@@ -194,7 +194,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: "taxcompliance",
             title: "Tax Compliance System",
             description: "Streamlined tax filing processes using iTax System, reducing compliance errors by 25% at KRA.",
-            image: "static/images/tax_compliance.jpg", // Using known working image
+            image: "static/images/tax_compliance.jpg", 
             category: "tax",
             technologies: ["iTax System", "Excel", "SQL", "JavaScript"],
             liveLink: "#",
@@ -204,7 +204,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: "statisticalsurvey",
             title: "Statistical Survey Analysis",
             description: "Conducted survey analysis with R, providing actionable insights for client satisfaction strategies.",
-            image: "static/images/statistical_analysis.jpg", // Using known working image
+            image: "static/images/statistical_analysis.jpg", 
             category: "data",
             technologies: ["R", "Excel", "SPSS", "Google Forms"],
             liveLink: "#",
@@ -214,7 +214,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: "costoptimization",
             title: "Cost Optimization Dashboard",
             description: "Created an Excel-based dashboard for cost tracking, saving 15% in operational expenses.",
-            image: "static/images/cost_optimization.jpg", // Using known working image
+            image: "static/images/cost_optimization.jpg",
             category: "financial",
             technologies: ["Excel", "VBA", "Power BI", "Streamlit"],
             liveLink: "#",
@@ -224,10 +224,10 @@ document.addEventListener('DOMContentLoaded', function() {
             id: "taxaudit",
             title: "Tax Audit Workflow",
             description: "Designed an SQL-driven audit workflow, improving audit efficiency by 20% during KRA internship.",
-            image: "static/images/tax_audit.jpg", // Using known working image
+            image: "static/images/tax_audit.jpg",
             category: "tax",
             technologies: ["SQL", "Excel", "Power BI"],
-            liveLink: "#",
+            liveLink: "https://pinaccleadvisorygroup.my.canva.site/",
             codeLink: "#"
         }
     ];
