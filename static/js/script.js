@@ -94,8 +94,8 @@ document.addEventListener('DOMContentLoaded', function() {
             profileImage.classList.add('fade-out');
             setTimeout(() => {
                 profileImage.src = currentImage === 1 
-                    ? 'static/images/profile.jpg'
-                    : 'static/images/profile2.jpg';
+                    ? 'static/images/profile2.jpg' 
+                    : 'static/images/profile.jpg';
                 currentImage = currentImage === 1 ? 2 : 1;
                 profileImage.classList.remove('fade-out');
                 
@@ -108,9 +108,25 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 8000);
     }
 
-    // Contact Modal: Handle both contact buttons to show/hide modal
+    // Lazy Loading Images: Add 'loaded' class when images enter viewport (excluding portfolio)
+    const lazyImages = document.querySelectorAll('img.lazy-load:not(.portfolio-item img)');
+    if (lazyImages.length) {
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    img.classList.add('loaded');
+                    observer.unobserve(img);
+                }
+            });
+        }, { threshold: 0.3, rootMargin: '50px' });
+
+        lazyImages.forEach(img => imageObserver.observe(img));
+    }
+
+    // Contact Modal: Handle all contact buttons to show/hide modal
     const contactModal = document.getElementById('contactModal');
-    const contactButtons = document.querySelectorAll('.contact-btn'); // Select all contact buttons
+    const contactButtons = document.querySelectorAll('.contact-btn');
     const closeContactModal = contactModal?.querySelector('.close-modal');
 
     if (contactButtons && contactModal && closeContactModal) {
@@ -152,13 +168,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const closeProjectModal = projectModal?.querySelector('.close-modal');
     let projectsData = [];
 
-    // Fallback project data
+    // Fallback project data with known working image for testing
     const fallbackProjects = [
         {
             id: "revenuetrend",
             title: "Revenue Trend Analysis",
             description: "Developed interactive Tableau dashboards to visualize revenue trends, improving decision-making by 30% during KRA internship.",
-            image: "static/images/data_visualization.webp",
+            image: "static/images/data_visualization.jpg", // Using known working image
             category: "data",
             technologies: ["Tableau", "Excel", "SQL", "Streamlit", "React"],
             liveLink: "https://app-sales-dashboard-dy7t3qgwckyxpxfvc4rmrc.streamlit.app",
@@ -168,7 +184,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: "financialforecast",
             title: "Financial Forecasting Model",
             description: "Built a Python-based predictive model to forecast financial trends, enhancing budget planning accuracy.",
-            image: "static/images/financial_dashboard.webp",
+            image: "static/images/financial_dashboard.jpg", // Using known working image
             category: "financial",
             technologies: ["Python", "Pandas", "Scikit-learn", "Flask", "Streamlit"],
             liveLink: "#",
@@ -178,7 +194,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: "taxcompliance",
             title: "Tax Compliance System",
             description: "Streamlined tax filing processes using iTax System, reducing compliance errors by 25% at KRA.",
-            image: "static/images/tax_compliance.webp",
+            image: "static/images/tax_compliance.jpg", // Using known working image
             category: "tax",
             technologies: ["iTax System", "Excel", "SQL", "JavaScript"],
             liveLink: "#",
@@ -188,7 +204,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: "statisticalsurvey",
             title: "Statistical Survey Analysis",
             description: "Conducted survey analysis with R, providing actionable insights for client satisfaction strategies.",
-            image: "static/images/statistical_analysis.webp",
+            image: "static/images/statistical_analysis.jpg", // Using known working image
             category: "data",
             technologies: ["R", "Excel", "SPSS", "Google Forms"],
             liveLink: "#",
@@ -198,7 +214,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: "costoptimization",
             title: "Cost Optimization Dashboard",
             description: "Created an Excel-based dashboard for cost tracking, saving 15% in operational expenses.",
-            image: "static/images/cost_optimization.webp",
+            image: "static/images/cost_optimization.jpg", // Using known working image
             category: "financial",
             technologies: ["Excel", "VBA", "Power BI", "Streamlit"],
             liveLink: "#",
@@ -208,7 +224,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: "taxaudit",
             title: "Tax Audit Workflow",
             description: "Designed an SQL-driven audit workflow, improving audit efficiency by 20% during KRA internship.",
-            image: "static/images/tax_audit.webp",
+            image: "static/images/tax_audit.jpg", // Using known working image
             category: "tax",
             technologies: ["SQL", "Excel", "Power BI"],
             liveLink: "#",
@@ -218,16 +234,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Render projects to the portfolio grid
     function renderProjects(projects) {
-        if (!portfolioGrid) return;
+        console.log('Rendering projects:', projects); // Debug: Log projects being rendered
+        if (!portfolioGrid) {
+            console.error('Portfolio grid not found');
+            return;
+        }
         portfolioGrid.innerHTML = '';
-        const fallbackImage = 'static/images/placeholder.jpg';
+        const fallbackImage = 'static/images/profile.jpg'; // Known working image
+
         projects.forEach(project => {
+            console.log(`Attempting to load image for ${project.title}: ${project.image}`); // Debug: Log image path
             const portfolioItem = document.createElement('div');
             portfolioItem.className = 'portfolio-item';
             portfolioItem.setAttribute('data-category', project.category);
             portfolioItem.setAttribute('data-project-id', project.id);
             portfolioItem.innerHTML = `
-                <img src="${project.image}" alt="${project.title}" loading="lazy" onerror="this.src='${fallbackImage}'">
+                <img src="${project.image}" alt="${project.title}" class="portfolio-img">
                 <div class="portfolio-overlay">
                     <h3>${project.title}</h3>
                     <p>${project.description}</p>
@@ -239,6 +261,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             `;
             portfolioGrid.appendChild(portfolioItem);
+
+            const img = portfolioItem.querySelector('img');
+            img.onerror = () => {
+                console.warn(`Failed to load image for ${project.title}: ${project.image}`);
+                img.src = fallbackImage;
+                img.onerror = () => {
+                    console.warn(`Failed to load fallback image: ${fallbackImage}`);
+                    img.src = 'https://via.placeholder.com/300x250?text=Image+Not+Found';
+                };
+            };
+            img.onload = () => {
+                console.log(`Successfully loaded image for ${project.title}: ${img.src}`);
+            };
         });
 
         // Add event listeners for project modal
@@ -247,9 +282,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 const projectId = e.target.closest('.portfolio-item').getAttribute('data-project-id');
                 const project = projectsData.find(p => p.id === projectId);
                 if (project && projectModal) {
-                    document.getElementById('projectModalImage').src = project.image || fallbackImage;
-                    document.getElementById('projectModalImage').onerror = () => {
-                        document.getElementById('projectModalImage').src = fallbackImage;
+                    console.log(`Opening modal for project: ${project.title}`); // Debug: Log modal open
+                    const modalImage = document.getElementById('projectModalImage');
+                    modalImage.src = project.image || fallbackImage;
+                    modalImage.onerror = () => {
+                        console.warn(`Failed to load modal image for ${project.title}: ${project.image}`);
+                        modalImage.src = fallbackImage;
+                        modalImage.onerror = () => {
+                            console.warn(`Failed to load modal fallback image: ${fallbackImage}`);
+                            modalImage.src = 'https://via.placeholder.com/300x200?text=Image+Not+Found';
+                        };
+                    };
+                    modalImage.onload = () => {
+                        console.log(`Successfully loaded modal image for ${project.title}: ${modalImage.src}`);
                     };
                     document.getElementById('projectModalTitle').textContent = project.title;
                     document.getElementById('projectModalDescription').textContent = project.description;
@@ -294,13 +339,14 @@ document.addEventListener('DOMContentLoaded', function() {
             return response.json();
         })
         .then(projects => {
+            console.log('Loaded projects from JSON:', projects); // Debug: Log JSON projects
             projectsData = projects;
             renderProjects(projects);
             initializeFilters();
         })
         .catch(error => {
-            console.error('Error loading projects:', error);
-            portfolioGrid.innerHTML = '<p style="text-align: center; color: var(--text-color);">Unable to load projects. Please try again later.</p>';
+            console.error('Error loading projects.json:', error);
+            portfolioGrid.innerHTML = '<p class="error-message">Unable to load projects. Displaying fallback projects.</p>';
             projectsData = fallbackProjects;
             renderProjects(fallbackProjects);
             initializeFilters();

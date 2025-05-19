@@ -666,6 +666,31 @@ nav {
     opacity: 1;
 }
 
+/* Dark Mode Styles for Skills Preview */
+.dark-mode .skills-preview {
+    background: var(--light-color); /* Matches dark mode container background */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode .skills-preview h3 {
+    color: var(--primary-color); /* Maintains consistency with primary color */
+}
+
+.dark-mode .circular-progress .background-circle {
+    stroke: #4a4a4a; /* Darker grey for visibility in dark mode */
+}
+
+.dark-mode .circular-progress .inner-circle {
+    fill: var(--light-color); /* Matches dark mode background for consistency */
+}
+
+.dark-mode .circular-progress .percentage-text {
+    color: var(--text-color); /* Uses dark mode text color */
+}
+
+.dark-mode .skill-item span {
+    color: var(--text-color); /* Ensures skill names are readable */
+}
 /* Modal Styles */
 .modal {
     display: none;
