@@ -19,6 +19,7 @@
     --error-color: #e63946;
 }
 
+/* Reset default margins and paddings */
 * {
     margin: 0;
     padding: 0;
@@ -26,10 +27,12 @@
     font-family: 'Poppins', sans-serif;
 }
 
+/* Smooth scrolling behavior */
 html {
     scroll-behavior: smooth;
 }
 
+/* Base body styles */
 body {
     background-color: #fff;
     color: var(--text-color);
@@ -49,9 +52,13 @@ body {
     transition: transform 0.1s ease, opacity 0.3s ease;
     z-index: 9999;
     opacity: 0;
+    mix-blend-mode: difference;
 }
 
-.portfolio-item:hover ~ .custom-cursor {
+/* Cursor hover effects */
+.portfolio-item:hover ~ .custom-cursor,
+.skill-item:hover ~ .custom-cursor,
+.btn:hover ~ .custom-cursor {
     opacity: 1;
     transform: translate(-50%, -50%) scale(1.5);
 }
@@ -107,6 +114,7 @@ a {
     transition: var(--transition);
 }
 
+/* Button Styles */
 .btn {
     display: inline-block;
     padding: 14px 35px;
@@ -159,6 +167,10 @@ a {
 
 .btn.ripple:active::after {
     transform: translate(-50%, -50%) scale(1);
+}
+
+.btn:active {
+    transform: translateY(1px) !important;
 }
 
 img {
@@ -398,6 +410,7 @@ nav {
 
 .image-wrapper img.fade-out {
     opacity: 0;
+    transform: scale(0.95);
 }
 
 .image-overlay {
@@ -418,6 +431,16 @@ nav {
 
 .hero-image:hover .image-overlay {
     background: linear-gradient(135deg, rgba(67, 97, 238, 0.1) 0%, rgba(58, 12, 163, 0.1) 100%);
+}
+
+.image-wrapper.shake {
+    animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
 }
 
 .scroll-indicator {
@@ -678,18 +701,9 @@ nav {
 }
 
 @keyframes bounceIn {
-    0% {
-        transform: scale(0.7);
-        opacity: 0;
-    }
-    50% {
-        transform: scale(1.05);
-        opacity: 0.8;
-    }
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
+    0% { transform: scale(0.7); opacity: 0; }
+    50% { transform: scale(1.05); opacity: 0.8; }
+    100% { transform: scale(1); opacity: 1; }
 }
 
 .modal-content h4 {
@@ -1310,5 +1324,15 @@ footer {
 
     .filter-btn {
         margin: 0 10px 10px 0;
+    }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
     }
 }

@@ -3,6 +3,15 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize AOS for scroll animations
     AOS.init({ duration: 800, once: true });
 
+    // Custom Cursor: Follow mouse movement
+    const cursor = document.querySelector('.custom-cursor');
+    if (cursor) {
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+    }
+
     // Mobile Menu: Toggle navigation menu for mobile devices
     const menuToggle = document.querySelector('.menu-toggle');
     const closeMenu = document.querySelector('.close-menu');
@@ -12,22 +21,25 @@ document.addEventListener('DOMContentLoaded', function() {
         menuToggle.addEventListener('click', () => {
             navLinks.classList.add('active');
             navLinks.setAttribute('aria-expanded', 'true');
+            document.body.style.overflow = 'hidden';
         });
 
         closeMenu.addEventListener('click', () => {
             navLinks.classList.remove('active');
             navLinks.setAttribute('aria-expanded', 'false');
+            document.body.style.overflow = 'auto';
         });
 
         document.querySelectorAll('.nav-links a').forEach(link => {
             link.addEventListener('click', () => {
                 navLinks.classList.remove('active');
                 navLinks.setAttribute('aria-expanded', 'false');
+                document.body.style.overflow = 'auto';
             });
         });
     }
 
-    // Sticky Header: Add 'scrolled' class to header when scrolling past 100px
+    // Sticky Header: Add 'scrolled' class when scrolling past 100px
     const header = document.querySelector('header');
     window.addEventListener('scroll', () => {
         if (header) {
@@ -35,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Typing Animation: Cycle through roles in hero section with typing effect
+    // Typing Animation: Cycle through roles in hero section
     const typedTextSpan = document.querySelector('.typed-text');
     const cursorSpan = document.querySelector('.cursor');
     const textArray = ['Statistician', 'Web Developer', 'Data Storyteller', 'Analytical Strategist', 'Tax Consultant'];
@@ -74,16 +86,40 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(type, newTextDelay + 250);
     }
 
-    // Contact Modal: Show/hide contact form modal
+    // Profile Image Animation: Alternate images with fade and shake
+    const profileImage = document.querySelector('.hero-image img');
+    if (profileImage) {
+        let currentImage = 1;
+        setInterval(() => {
+            profileImage.classList.add('fade-out');
+            setTimeout(() => {
+                profileImage.src = currentImage === 1 
+                    ? 'static/images/profile.jpg'
+                    : 'static/images/profile2.jpg';
+                currentImage = currentImage === 1 ? 2 : 1;
+                profileImage.classList.remove('fade-out');
+                
+                const imageWrapper = document.querySelector('.image-wrapper');
+                imageWrapper.classList.add('shake');
+                setTimeout(() => {
+                    imageWrapper.classList.remove('shake');
+                }, 500);
+            }, 500);
+        }, 8000);
+    }
+
+    // Contact Modal: Handle both contact buttons to show/hide modal
     const contactModal = document.getElementById('contactModal');
-    const contactBtn = document.querySelector('.contact-btn');
+    const contactButtons = document.querySelectorAll('.contact-btn'); // Select all contact buttons
     const closeContactModal = contactModal?.querySelector('.close-modal');
 
-    if (contactBtn && contactModal && closeContactModal) {
-        contactBtn.addEventListener('click', () => {
-            contactModal.classList.add('show');
-            document.body.style.overflow = 'hidden';
-            contactModal.focus();
+    if (contactButtons && contactModal && closeContactModal) {
+        contactButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                contactModal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+                contactModal.focus();
+            });
         });
 
         closeContactModal.addEventListener('click', () => {
@@ -99,7 +135,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Dynamic Email: Construct email address to prevent spam
+    // Dynamic Email: Construct email to prevent spam
     const aboutEmailLink = document.getElementById('about-email');
     if (aboutEmailLink) {
         const emailUser = 'nekoslevin';
@@ -109,14 +145,14 @@ document.addEventListener('DOMContentLoaded', function() {
         aboutEmailLink.textContent = email;
     }
 
-    // Portfolio Filter and Modal: Load projects and handle modal interactions
+    // Portfolio Filter and Modal: Load projects and handle interactions
     const filterButtons = document.querySelectorAll('.filter-btn');
     const portfolioGrid = document.querySelector('.portfolio-grid');
     const projectModal = document.getElementById('projectModal');
     const closeProjectModal = projectModal?.querySelector('.close-modal');
     let projectsData = [];
 
-    // Fallback project data in case JSON fetch fails
+    // Fallback project data
     const fallbackProjects = [
         {
             id: "revenuetrend",
@@ -419,10 +455,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Dark Mode: Toggle and persist dark mode theme
+    // Dark Mode: Toggle and persist theme
     const darkModeToggle = document.querySelector('.dark-mode-toggle');
     if (darkModeToggle) {
-        // Check localStorage for dark mode preference
         if (localStorage.getItem('darkMode') === 'enabled') {
             document.body.classList.add('dark-mode');
             darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
@@ -436,7 +471,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Smooth Scrolling: Enable smooth scrolling for anchor links
+    // Smooth Scrolling: For anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             e.preventDefault();
@@ -453,7 +488,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Track CV Downloads: Log CV download events with Cloudflare Analytics
+    // Track CV Downloads: Log with Cloudflare Analytics
     window.trackCVDownload = function() {
         if (typeof window.cfAnalytics !== 'undefined' && window.cfAnalytics.logEvent) {
             window.cfAnalytics.logEvent({
