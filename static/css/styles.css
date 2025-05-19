@@ -17,6 +17,7 @@
     --background-color: #f9f9f9;
     --glow-color: rgba(67, 97, 238, 0.5);
     --error-color: #e63946;
+    --glass-bg: rgba(255, 255, 255, 0.15); /* For frosted glass effect */
 }
 
 /* Reset default margins and paddings */
@@ -405,7 +406,7 @@ nav {
     height: 100%;
     object-fit: cover;
     object-position: center;
-    transition: opacity 1s ease, transform 0.5s ease;
+    transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
 .image-wrapper img.fade-out {
@@ -431,6 +432,31 @@ nav {
 
 .hero-image:hover .image-overlay {
     background: linear-gradient(135deg, rgba(67, 97, 238, 0.1) 0%, rgba(58, 12, 163, 0.1) 100%);
+}
+
+/* Frosted Glass Effect for Hero Image Transition */
+.image-wrapper.glass-effect::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--glass-bg);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px); /* For Safari */
+    z-index: 2;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.image-wrapper.glass-effect::before {
+    opacity: 1;
+}
+
+.image-wrapper.glass-effect {
+    transform: scale(1.02);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
 }
 
 .image-wrapper.shake {
@@ -550,7 +576,7 @@ nav {
     border-radius: 12px;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
     max-width: 1200px;
-    font-family; 'Cosmic Sans MS', cursive;
+    font-family: 'Cosmic Sans MS', cursive;
 }
 
 .skills-preview h3 {
@@ -561,7 +587,7 @@ nav {
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 1.2px;
-    font-family; 'Cosmic Sans MS', cursive;
+    font-family: 'Cosmic Sans MS', cursive;
 }
 
 .skills-grid {
@@ -578,7 +604,7 @@ nav {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     cursor: pointer;
     perspective: 1000px;
-    font-family; 'Cosmic Sans MS', cursive;
+    font-family: 'Cosmic Sans MS', cursive;
 }
 
 .skill-item:hover {
@@ -671,29 +697,30 @@ nav {
 
 /* Dark Mode Styles for Skills Preview */
 .dark-mode .skills-preview {
-    background: var(--light-color); /* Matches dark mode container background */
+    background: var(--light-color);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
 
 .dark-mode .skills-preview h3 {
-    color: var(--primary-color); /* Maintains consistency with primary color */
+    color: var(--primary-color);
 }
 
 .dark-mode .circular-progress .background-circle {
-    stroke: #4a4a4a; /* Darker grey for visibility in dark mode */
+    stroke: #4a4a4a;
 }
 
 .dark-mode .circular-progress .inner-circle {
-    fill: var(--light-color); /* Matches dark mode background for consistency */
+    fill: var(--light-color);
 }
 
 .dark-mode .circular-progress .percentage-text {
-    color: var(--text-color); /* Uses dark mode text color */
+    color: var(--text-color);
 }
 
 .dark-mode .skill-item span {
-    color: var(--text-color); /* Ensures skill names are readable */
+    color: var(--text-color);
 }
+
 /* Modal Styles */
 .modal {
     display: none;
@@ -1188,6 +1215,7 @@ footer {
     --text-light: #b8b8b8;
     --bg-light: #0f0f1a;
     --error-color: #ff6b6b;
+    --glass-bg: rgba(255, 255, 255, 0.1); /* Adjust for dark mode */
     background-color: #0f0f1a;
 }
 
@@ -1211,6 +1239,12 @@ footer {
 
 .dark-mode .error-message {
     background-color: rgba(255, 107, 107, 0.1);
+}
+
+.dark-mode .image-wrapper.glass-effect::before {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 /* Responsive Styles */
@@ -1362,5 +1396,9 @@ footer {
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
         scroll-behavior: auto !important;
+    }
+
+    .image-wrapper.glass-effect::before {
+        transition: none !important;
     }
 }

@@ -86,23 +86,34 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(type, newTextDelay + 250);
     }
 
-    // Profile Image Animation: Alternate images with fade and shake
+    // Profile Image Animation: Alternate images with fade, shake, and glass effect
     const profileImage = document.querySelector('.hero-image img');
-    if (profileImage) {
+    const imageWrapper = document.querySelector('.image-wrapper');
+    const fallbackImage = 'static/images/profile.jpg'; // Fallback image
+    if (profileImage && imageWrapper) {
         let currentImage = 1;
+        profileImage.onerror = () => {
+            console.warn(`Failed to load image: ${profileImage.src}`);
+            profileImage.src = fallbackImage;
+        };
+        profileImage.onload = () => {
+            console.log(`Successfully loaded hero image: ${profileImage.src}`);
+        };
         setInterval(() => {
-            profileImage.classList.add('fade-out');
+            // Apply glass effect and fade-out
+            imageWrapper.classList.add('glass-effect', 'fade-out');
             setTimeout(() => {
+                // Change image source
                 profileImage.src = currentImage === 1 
                     ? 'static/images/profile2.jpg' 
                     : 'static/images/profile.jpg';
                 currentImage = currentImage === 1 ? 2 : 1;
-                profileImage.classList.remove('fade-out');
-                
-                const imageWrapper = document.querySelector('.image-wrapper');
+                // Remove fade-out and apply shake
+                imageWrapper.classList.remove('fade-out');
                 imageWrapper.classList.add('shake');
                 setTimeout(() => {
-                    imageWrapper.classList.remove('shake');
+                    // Remove glass effect and shake
+                    imageWrapper.classList.remove('glass-effect', 'shake');
                 }, 500);
             }, 500);
         }, 8000);
@@ -174,7 +185,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: "revenuetrend",
             title: "Revenue Trend Analysis",
             description: "Developed interactive Tableau dashboards to visualize revenue trends, improving decision-making by 30% during KRA internship.",
-            image: "static/images/data_visualization.jpg", // Using known working image
+            image: "static/images/data_visualization.jpg",
             category: "data",
             technologies: ["Tableau", "Excel", "SQL", "Streamlit", "React"],
             liveLink: "https://app-sales-dashboard-dy7t3qgwckyxpxfvc4rmrc.streamlit.app",
@@ -184,7 +195,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: "financialforecast",
             title: "Financial Forecasting Model",
             description: "Built a Python-based predictive model to forecast financial trends, enhancing budget planning accuracy.",
-            image: "static/images/financial_dashboard.jpg", // Using known working image
+            image: "static/images/financial_dashboard.jpg",
             category: "financial",
             technologies: ["Python", "Pandas", "Scikit-learn", "Flask", "Streamlit"],
             liveLink: "#",
@@ -194,7 +205,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: "taxcompliance",
             title: "Tax Compliance System",
             description: "Streamlined tax filing processes using iTax System, reducing compliance errors by 25% at KRA.",
-            image: "static/images/tax_compliance.jpg", 
+            image: "static/images/tax_compliance.jpg",
             category: "tax",
             technologies: ["iTax System", "Excel", "SQL", "JavaScript"],
             liveLink: "#",
@@ -204,7 +215,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: "statisticalsurvey",
             title: "Statistical Survey Analysis",
             description: "Conducted survey analysis with R, providing actionable insights for client satisfaction strategies.",
-            image: "static/images/statistical_analysis.jpg", 
+            image: "static/images/statistical_analysis.jpg",
             category: "data",
             technologies: ["R", "Excel", "SPSS", "Google Forms"],
             liveLink: "#",
@@ -234,16 +245,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Render projects to the portfolio grid
     function renderProjects(projects) {
-        console.log('Rendering projects:', projects); // Debug: Log projects being rendered
+        console.log('Rendering projects:', projects);
         if (!portfolioGrid) {
             console.error('Portfolio grid not found');
             return;
         }
         portfolioGrid.innerHTML = '';
-        const fallbackImage = 'static/images/profile.jpg'; // Known working image
+        const fallbackImage = 'static/images/profile.jpg';
 
         projects.forEach(project => {
-            console.log(`Attempting to load image for ${project.title}: ${project.image}`); // Debug: Log image path
+            console.log(`Attempting to load image for ${project.title}: ${project.image}`);
             const portfolioItem = document.createElement('div');
             portfolioItem.className = 'portfolio-item';
             portfolioItem.setAttribute('data-category', project.category);
@@ -282,7 +293,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const projectId = e.target.closest('.portfolio-item').getAttribute('data-project-id');
                 const project = projectsData.find(p => p.id === projectId);
                 if (project && projectModal) {
-                    console.log(`Opening modal for project: ${project.title}`); // Debug: Log modal open
+                    console.log(`Opening modal for project: ${project.title}`);
                     const modalImage = document.getElementById('projectModalImage');
                     modalImage.src = project.image || fallbackImage;
                     modalImage.onerror = () => {
@@ -339,7 +350,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return response.json();
         })
         .then(projects => {
-            console.log('Loaded projects from JSON:', projects); // Debug: Log JSON projects
+            console.log('Loaded projects from JSON:', projects);
             projectsData = projects;
             renderProjects(projects);
             initializeFilters();
