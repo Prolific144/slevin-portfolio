@@ -550,6 +550,7 @@ nav {
     border-radius: 12px;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
     max-width: 1200px;
+    font-family; 'Cosmic Sans MS', cursive;
 }
 
 .skills-preview h3 {
@@ -557,9 +558,10 @@ nav {
     margin-bottom: 15px;
     color: var(--primary-color);
     text-align: center;
-    font-weight: 700;
+    font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 1.2px;
+    font-family; 'Cosmic Sans MS', cursive;
 }
 
 .skills-grid {
@@ -576,6 +578,7 @@ nav {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     cursor: pointer;
     perspective: 1000px;
+    font-family; 'Cosmic Sans MS', cursive;
 }
 
 .skill-item:hover {
