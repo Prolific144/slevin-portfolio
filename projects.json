@@ -2,28 +2,28 @@
     {
         "id": "revenuetrend",
         "title": "Revenue Trend Analysis",
-        "description": "Developed interactive Tableau dashboards to visualize revenue trends, improving decisionmaking by 30% during KRA internship.",
-        "image": "static/images/data_visualization.webp",
+        "description": "Developed interactive Tableau dashboards to visualize revenue trends, improving decision-making speed by 30% during a KRA internship.",
+        "image": "static/images/data_visualization.jpg",
         "category": "data",
         "technologies": ["Tableau", "Excel", "SQL", "Streamlit", "React"],
         "liveLink": "https://app-sales-dashboard-dy7t3qgwckyxpxfvc4rmrc.streamlit.app",
-        "codeLink": "https://github.com/Prolific144/streamlitsalesdashboard"
+        "codeLink": "https://github.com/Prolific144/streamlit-sales-dashboard"
     },
     {
         "id": "financialforecast",
         "title": "Financial Forecasting Model",
-        "description": "Built a Pythonbased predictive model to forecast financial trends, enhancing budget planning accuracy.",
-        "image": "static/images/financial_dashboard.webp",
+        "description": "Built a Python-based predictive model to forecast financial trends, enhancing budget planning accuracy for stakeholders.",
+        "image": "static/images/financial_dashboard.jpg",
         "category": "financial",
-        "technologies": ["Python", "Pandas", "Scikitlearn", "Flask", "Streamlit"],
-        "liveLink": "https://app-sales-dashboard-dy7t3qgwckyxpxfvc4rmrc.streamlit.app",
-        "codeLink": "https://github.com/Prolific144/streamlitsalesdashboard"
+        "technologies": ["Python", "Pandas", "Scikit-learn", "Flask", "Streamlit"],
+        "liveLink": "#",
+        "codeLink": "#"
     },
     {
         "id": "taxcompliance",
         "title": "Tax Compliance System",
-        "description": "Streamlined tax filing processes using iTax System, reducing compliance errors by 25% at KRA.",
-        "image": "static/images/tax_compliance.webp",
+        "description": "Streamlined tax filing processes using the iTax System, reducing compliance errors by 25% at KRA.",
+        "image": "static/images/tax_compliance.jpg",
         "category": "tax",
         "technologies": ["iTax System", "Excel", "SQL", "JavaScript"],
         "liveLink": "#",
@@ -32,8 +32,8 @@
     {
         "id": "statisticalsurvey",
         "title": "Statistical Survey Analysis",
-        "description": "Conducted survey analysis with R, providing actionable insights for client satisfaction strategies.",
-        "image": "static/images/statistical_analysis.webp",
+        "description": "Conducted survey analysis using R, providing actionable insights for client satisfaction strategies.",
+        "image": "static/images/statistical_analysis.jpg",
         "category": "data",
         "technologies": ["R", "Excel", "SPSS", "Google Forms"],
         "liveLink": "#",
@@ -42,8 +42,8 @@
     {
         "id": "costoptimization",
         "title": "Cost Optimization Dashboard",
-        "description": "Created an Excelbased dashboard for cost tracking, saving 15% in operational expenses.",
-        "image": "static/images/cost_optimization.webp",
+        "description": "Created an Excel-based dashboard for cost tracking, saving 15% in operational expenses.",
+        "image": "static/images/cost_optimization.jpg",
         "category": "financial",
         "technologies": ["Excel", "VBA", "Power BI", "Streamlit"],
         "liveLink": "#",
@@ -52,11 +52,11 @@
     {
         "id": "taxaudit",
         "title": "Tax Audit Workflow",
-        "description": "Designed an SQLdriven audit workflow, improving audit efficiency by 20% during KRA internship.",
-        "image": "static/images/tax_audit.webp",
+        "description": "Designed an SQL-driven audit workflow, improving audit efficiency by 20% during a KRA internship.",
+        "image": "static/images/tax_audit.jpg",
         "category": "tax",
         "technologies": ["SQL", "Excel", "Power BI"],
-        "liveLink": "#",
+        "liveLink": "https://pinaccleadvisorygroup.my.canva.site/",
         "codeLink": "#"
     }
 ]
