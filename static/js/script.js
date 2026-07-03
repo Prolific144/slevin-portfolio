@@ -1,559 +1,804 @@
-// Initialize when DOM is fully loaded
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize AOS for scroll animations
-    AOS.init({ duration: 800, once: true });
+/* ==========================================================================
+   Slevin Onono — Portfolio
+   Application script: navigation, hero effects, skills, projects, modals.
+   ========================================================================== */
+(function () {
+  'use strict';
 
-    // Custom Cursor: Follow mouse movement
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  document.addEventListener('DOMContentLoaded', init);
+
+  function init() {
+    initAOS();
+    initCustomCursor();
+    initMobileMenu();
+    initHeaderScroll();
+    initScrollProgress();
+    initActiveNavLink();
+    initTypingAnimation();
+    initHeroImageRotator();
+    initLazyImages();
+    initContactModal();
+    initDynamicEmail();
+    initPortfolio();
+    initBackToTop();
+    initSkillBars();
+    initSkillsPreview();
+    initDarkMode();
+    initSmoothScroll();
+    initRippleButtons();
+    initContactForm();
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* AOS (scroll animations)                                            */
+  /* ------------------------------------------------------------------ */
+  function initAOS() {
+    if (typeof AOS === 'undefined') return;
+    AOS.init({
+      duration: 700,
+      once: true,
+      easing: 'ease-out-cubic',
+      disable: prefersReducedMotion,
+    });
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* Custom cursor (desktop / pointer devices only)                     */
+  /* ------------------------------------------------------------------ */
+  function initCustomCursor() {
     const cursor = document.querySelector('.custom-cursor');
-    if (cursor) {
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-        });
-    }
+    if (!cursor || window.matchMedia('(hover: none), (pointer: coarse)').matches) return;
 
-    // Mobile Menu: Toggle navigation menu for mobile devices
+    let raf = null;
+    document.addEventListener('mousemove', (e) => {
+      cursor.style.opacity = '1';
+      if (raf) cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top = e.clientY + 'px';
+      });
+    });
+
+    document.addEventListener('mouseleave', () => (cursor.style.opacity = '0'));
+
+    const interactiveSelector = 'a, button, .portfolio-item, .skill-item, input, textarea';
+    document.body.addEventListener('mouseover', (e) => {
+      if (e.target.closest(interactiveSelector)) cursor.classList.add('active');
+    });
+    document.body.addEventListener('mouseout', (e) => {
+      if (e.target.closest(interactiveSelector)) cursor.classList.remove('active');
+    });
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* Mobile menu                                                        */
+  /* ------------------------------------------------------------------ */
+  function initMobileMenu() {
     const menuToggle = document.querySelector('.menu-toggle');
     const closeMenu = document.querySelector('.close-menu');
     const navLinks = document.querySelector('.nav-links');
+    const backdrop = document.getElementById('nav-backdrop');
 
-    if (menuToggle && closeMenu && navLinks) {
-        menuToggle.addEventListener('click', () => {
-            navLinks.classList.add('active');
-            navLinks.setAttribute('aria-expanded', 'true');
-            document.body.style.overflow = 'hidden';
-        });
+    if (!menuToggle || !closeMenu || !navLinks) return;
 
-        closeMenu.addEventListener('click', () => {
-            navLinks.classList.remove('active');
-            navLinks.setAttribute('aria-expanded', 'false');
-            document.body.style.overflow = 'auto';
-        });
-
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => {
-                navLinks.classList.remove('active');
-                navLinks.setAttribute('aria-expanded', 'false');
-                document.body.style.overflow = 'auto';
-            });
-        });
+    function openMenu() {
+      navLinks.classList.add('active');
+      navLinks.setAttribute('aria-expanded', 'true');
+      menuToggle.setAttribute('aria-expanded', 'true');
+      backdrop?.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      closeMenu.focus();
     }
 
-    // Sticky Header: Add 'scrolled' class when scrolling past 100px
-    const header = document.querySelector('header');
-    window.addEventListener('scroll', () => {
-        if (header) {
-            header.classList.toggle('scrolled', window.scrollY > 100);
-        }
+    function closeMenuFn() {
+      navLinks.classList.remove('active');
+      navLinks.setAttribute('aria-expanded', 'false');
+      menuToggle.setAttribute('aria-expanded', 'false');
+      backdrop?.classList.remove('active');
+      document.body.style.overflow = '';
+      menuToggle.focus();
+    }
+
+    menuToggle.addEventListener('click', openMenu);
+    closeMenu.addEventListener('click', closeMenuFn);
+    backdrop?.addEventListener('click', closeMenuFn);
+
+    document.querySelectorAll('.nav-links a').forEach((link) => {
+      link.addEventListener('click', closeMenuFn);
     });
 
-    // Typing Animation: Cycle through roles in hero section
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && navLinks.classList.contains('active')) closeMenuFn();
+    });
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* Sticky header + scroll progress                                    */
+  /* ------------------------------------------------------------------ */
+  function initHeaderScroll() {
+    const header = document.querySelector('header');
+    if (!header) return;
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          header.classList.toggle('scrolled', window.scrollY > 40);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+  }
+
+  function initScrollProgress() {
+    const bar = document.querySelector('.scroll-progress');
+    if (!bar) return;
+    const update = () => {
+      const doc = document.documentElement;
+      const scrollable = doc.scrollHeight - doc.clientHeight;
+      const progress = scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0;
+      bar.style.width = progress + '%';
+    };
+    window.addEventListener('scroll', update, { passive: true });
+    update();
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* Highlight active nav link based on visible section                 */
+  /* ------------------------------------------------------------------ */
+  function initActiveNavLink() {
+    const sections = document.querySelectorAll('main section[id], footer[id]');
+    const navAnchors = document.querySelectorAll('.nav-links a[href^="#"]');
+    if (!sections.length || !navAnchors.length) return;
+
+    const map = new Map();
+    navAnchors.forEach((a) => map.set(a.getAttribute('href').substring(1), a));
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const link = map.get(entry.target.id);
+          if (!link) return;
+          if (entry.isIntersecting) {
+            navAnchors.forEach((a) => a.classList.remove('is-active'));
+            link.classList.add('is-active');
+          }
+        });
+      },
+      { rootMargin: '-45% 0px -45% 0px' }
+    );
+
+    sections.forEach((section) => observer.observe(section));
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* Typing animation for hero role text                                */
+  /* ------------------------------------------------------------------ */
+  function initTypingAnimation() {
     const typedTextSpan = document.querySelector('.typed-text');
     const cursorSpan = document.querySelector('.cursor');
+    if (!typedTextSpan || !cursorSpan) return;
+
     const textArray = ['Statistician', 'Web Developer', 'Data Storyteller', 'Analytical Strategist', 'Tax Consultant'];
-    const typingDelay = 200;
-    const erasingDelay = 100;
-    const newTextDelay = 2000;
+    const typingDelay = 90;
+    const erasingDelay = 45;
+    const newTextDelay = 1800;
+
+    if (prefersReducedMotion) {
+      typedTextSpan.textContent = textArray[0];
+      cursorSpan.style.display = 'none';
+      return;
+    }
+
     let textArrayIndex = 0;
     let charIndex = 0;
 
     function type() {
-        if (charIndex < textArray[textArrayIndex].length) {
-            if (!cursorSpan.classList.contains('typing')) cursorSpan.classList.add('typing');
-            typedTextSpan.textContent += textArray[textArrayIndex].charAt(charIndex);
-            charIndex++;
-            setTimeout(type, typingDelay);
-        } else {
-            cursorSpan.classList.remove('typing');
-            setTimeout(erase, newTextDelay);
-        }
+      if (charIndex < textArray[textArrayIndex].length) {
+        cursorSpan.classList.add('typing');
+        typedTextSpan.textContent += textArray[textArrayIndex].charAt(charIndex);
+        charIndex++;
+        setTimeout(type, typingDelay);
+      } else {
+        cursorSpan.classList.remove('typing');
+        setTimeout(erase, newTextDelay);
+      }
     }
 
     function erase() {
-        if (charIndex > 0) {
-            if (!cursorSpan.classList.contains('typing')) cursorSpan.classList.add('typing');
-            typedTextSpan.textContent = textArray[textArrayIndex].substring(0, charIndex - 1);
-            charIndex--;
-            setTimeout(erase, erasingDelay);
-        } else {
-            cursorSpan.classList.remove('typing');
-            textArrayIndex = (textArrayIndex + 1) % textArray.length;
-            setTimeout(type, typingDelay + 1100);
-        }
+      if (charIndex > 0) {
+        cursorSpan.classList.add('typing');
+        typedTextSpan.textContent = textArray[textArrayIndex].substring(0, charIndex - 1);
+        charIndex--;
+        setTimeout(erase, erasingDelay);
+      } else {
+        cursorSpan.classList.remove('typing');
+        textArrayIndex = (textArrayIndex + 1) % textArray.length;
+        setTimeout(type, typingDelay + 600);
+      }
     }
 
-    if (typedTextSpan && cursorSpan && textArray.length) {
-        setTimeout(type, newTextDelay + 250);
-    }
+    setTimeout(type, newTextDelay);
+  }
 
-    // Profile Image Animation: Alternate images with fade, shake, and glass effect
+  /* ------------------------------------------------------------------ */
+  /* Hero profile photo rotator (fade / glass / shake)                  */
+  /* ------------------------------------------------------------------ */
+  function initHeroImageRotator() {
     const profileImage = document.querySelector('.hero-image img');
     const imageWrapper = document.querySelector('.image-wrapper');
-    const fallbackImage = 'static/images/profile.jpg'; // Fallback image
-    if (profileImage && imageWrapper) {
-        let currentImage = 1;
-        profileImage.onerror = () => {
-            console.warn(`Failed to load image: ${profileImage.src}`);
-            profileImage.src = fallbackImage;
-        };
-        profileImage.onload = () => {
-            console.log(`Successfully loaded hero image: ${profileImage.src}`);
-        };
-        setInterval(() => {
-            // Apply glass effect and fade-out
-            imageWrapper.classList.add('glass-effect', 'fade-out');
-            setTimeout(() => {
-                // Change image source
-                profileImage.src = currentImage === 1 
-                    ? 'static/images/profile2.jpg' 
-                    : 'static/images/profile.jpg';
-                currentImage = currentImage === 1 ? 2 : 1;
-                // Remove fade-out and apply shake
-                imageWrapper.classList.remove('fade-out');
-                imageWrapper.classList.add('shake');
-                setTimeout(() => {
-                    // Remove glass effect and shake
-                    imageWrapper.classList.remove('glass-effect', 'shake');
-                }, 500);
-            }, 500);
-        }, 8000);
+    const fallbackImage = 'static/images/profile.jpg';
+    if (!profileImage || !imageWrapper || prefersReducedMotion) return;
+
+    let currentImage = 1;
+    profileImage.addEventListener('error', () => {
+      if (profileImage.src.indexOf(fallbackImage) === -1) profileImage.src = fallbackImage;
+    });
+
+    setInterval(() => {
+      imageWrapper.classList.add('glass-effect', 'fade-out');
+      setTimeout(() => {
+        profileImage.src = currentImage === 1 ? 'static/images/profile2.jpg' : 'static/images/profile.jpg';
+        currentImage = currentImage === 1 ? 2 : 1;
+        imageWrapper.classList.remove('fade-out');
+        imageWrapper.classList.add('shake');
+        setTimeout(() => {
+          imageWrapper.classList.remove('glass-effect', 'shake');
+        }, 500);
+      }, 500);
+    }, 8000);
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* Lazy-load images with IntersectionObserver                         */
+  /* ------------------------------------------------------------------ */
+  function initLazyImages() {
+    const lazyImages = document.querySelectorAll('img.lazy-load');
+    if (!lazyImages.length) return;
+
+    if (!('IntersectionObserver' in window)) {
+      lazyImages.forEach((img) => img.classList.add('loaded'));
+      return;
     }
 
-    // Lazy Loading Images: Add 'loaded' class when images enter viewport (excluding portfolio)
-    const lazyImages = document.querySelectorAll('img.lazy-load:not(.portfolio-item img)');
-    if (lazyImages.length) {
-        const imageObserver = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const img = entry.target;
-                    img.classList.add('loaded');
-                    observer.unobserve(img);
-                }
-            });
-        }, { threshold: 0.3, rootMargin: '50px' });
+    const imageObserver = new IntersectionObserver(
+      (entries, observer) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('loaded');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.2, rootMargin: '80px' }
+    );
 
-        lazyImages.forEach(img => imageObserver.observe(img));
+    lazyImages.forEach((img) => {
+      if (img.complete) img.classList.add('loaded');
+      imageObserver.observe(img);
+    });
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* Generic modal open/close helpers (shared, with focus trapping)     */
+  /* ------------------------------------------------------------------ */
+  let lastFocusedElement = null;
+
+  function openModal(modal) {
+    if (!modal) return;
+    lastFocusedElement = document.activeElement;
+    modal.classList.add('show');
+    document.body.style.overflow = 'hidden';
+    const focusable = modal.querySelector('input, textarea, button, a[href]');
+    (focusable || modal).focus();
+    trapFocus(modal);
+  }
+
+  function closeModalEl(modal) {
+    if (!modal) return;
+    modal.classList.remove('show');
+    document.body.style.overflow = '';
+    if (lastFocusedElement) lastFocusedElement.focus();
+  }
+
+  function trapFocus(modal) {
+    const focusableEls = modal.querySelectorAll(
+      'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
+    );
+    if (!focusableEls.length) return;
+    const first = focusableEls[0];
+    const last = focusableEls[focusableEls.length - 1];
+
+    function handler(e) {
+      if (e.key !== 'Tab') return;
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
     }
 
-    // Contact Modal: Handle all contact buttons to show/hide modal
+    modal.addEventListener('keydown', handler);
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* Contact modal                                                      */
+  /* ------------------------------------------------------------------ */
+  function initContactModal() {
     const contactModal = document.getElementById('contactModal');
     const contactButtons = document.querySelectorAll('.contact-btn');
     const closeContactModal = contactModal?.querySelector('.close-modal');
+    if (!contactModal || !contactButtons.length) return;
 
-    if (contactButtons && contactModal && closeContactModal) {
-        contactButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                contactModal.classList.add('show');
-                document.body.style.overflow = 'hidden';
-                contactModal.focus();
-            });
-        });
+    contactButtons.forEach((button) => {
+      button.addEventListener('click', () => openModal(contactModal));
+    });
 
-        closeContactModal.addEventListener('click', () => {
-            contactModal.classList.remove('show');
-            document.body.style.overflow = 'auto';
-        });
+    closeContactModal?.addEventListener('click', () => closeModalEl(contactModal));
 
-        window.addEventListener('click', (e) => {
-            if (e.target === contactModal) {
-                contactModal.classList.remove('show');
-                document.body.style.overflow = 'auto';
-            }
-        });
+    contactModal.addEventListener('click', (e) => {
+      if (e.target === contactModal) closeModalEl(contactModal);
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && contactModal.classList.contains('show')) closeModalEl(contactModal);
+    });
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* Contact form (client-side validation + graceful mailto fallback)   */
+  /* ------------------------------------------------------------------ */
+  function initContactForm() {
+    const form = document.getElementById('contactForm');
+    const status = document.getElementById('form-status');
+    if (!form || !status) return;
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = form.querySelector('[name="name"]').value.trim();
+      const email = form.querySelector('[name="email"]').value.trim();
+      const message = form.querySelector('[name="message"]').value.trim();
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (!name || !email || !message) {
+        status.textContent = 'Please fill in every field before sending.';
+        status.className = 'form-status error';
+        return;
+      }
+      if (!emailPattern.test(email)) {
+        status.textContent = 'Please enter a valid email address.';
+        status.className = 'form-status error';
+        return;
+      }
+
+      const submitBtn = form.querySelector('button[type="submit"]');
+      const originalText = submitBtn.textContent;
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Opening your email client…';
+
+      // No backend is configured for this static site, so the message is
+      // handed off to the visitor's email client as a mailto link. This
+      // keeps the flow fully functional without requiring a server.
+      const to = 'nekoslevin@gmail.com';
+      const subject = encodeURIComponent(`Portfolio inquiry from ${name}`);
+      const body = encodeURIComponent(`${message}\n\n— ${name} (${email})`);
+      window.location.href = `mailto:${to}?subject=${subject}&body=${body}`;
+
+      status.textContent = 'Your email client should now open with your message ready to send.';
+      status.className = 'form-status success';
+
+      setTimeout(() => {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+        form.reset();
+      }, 1200);
+    });
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* Dynamic email (basic spam obfuscation)                             */
+  /* ------------------------------------------------------------------ */
+  function initDynamicEmail() {
+    const emailUser = 'nekoslevin';
+    const emailDomain = 'gmail.com';
+    const email = `${emailUser}@${emailDomain}`;
+
+    const aboutEmailInput = document.getElementById('about-email');
+    if (aboutEmailInput) aboutEmailInput.placeholder = email;
+
+    const footerEmail = document.getElementById('footer-email');
+    if (footerEmail) {
+      footerEmail.href = `mailto:${email}`;
+      footerEmail.textContent = email;
     }
+  }
 
-    // Dynamic Email: Construct email to prevent spam
-    const aboutEmailLink = document.getElementById('about-email');
-    if (aboutEmailLink) {
-        const emailUser = 'nekoslevin';
-        const emailDomain = 'gmail.com';
-        const email = `${emailUser}@${emailDomain}`;
-        aboutEmailLink.href = `mailto:${email}`;
-        aboutEmailLink.textContent = email;
-    }
-
-    // Portfolio Filter and Modal: Load projects and handle interactions
+  /* ------------------------------------------------------------------ */
+  /* Portfolio: render, filter, and project modal                       */
+  /* ------------------------------------------------------------------ */
+  function initPortfolio() {
     const filterButtons = document.querySelectorAll('.filter-btn');
     const portfolioGrid = document.querySelector('.portfolio-grid');
     const projectModal = document.getElementById('projectModal');
     const closeProjectModal = projectModal?.querySelector('.close-modal');
+    const fallbackImage = 'static/images/profile.jpg';
     let projectsData = [];
 
-    // Fallback project data with known working image for testing
-    const fallbackProjects = [
-        {
-            id: "revenuetrend",
-            title: "Revenue Trend Analysis",
-            description: "Developed interactive Tableau dashboards to visualize revenue trends, improving decision-making by 30% during KRA internship.",
-            image: "static/images/data_visualization.jpg",
-            category: "data",
-            technologies: ["Tableau", "Excel", "SQL", "Streamlit", "React"],
-            liveLink: "https://app-sales-dashboard-dy7t3qgwckyxpxfvc4rmrc.streamlit.app",
-            codeLink: "https://github.com/Prolific144/streamlit-sales-dashboard"
-        },
-        {
-            id: "financialforecast",
-            title: "Financial Forecasting Model",
-            description: "Built a Python-based predictive model to forecast financial trends, enhancing budget planning accuracy.",
-            image: "static/images/financial_dashboard.jpg",
-            category: "financial",
-            technologies: ["Python", "Pandas", "Scikit-learn", "Flask", "Streamlit"],
-            liveLink: "#",
-            codeLink: "#"
-        },
-        {
-            id: "taxcompliance",
-            title: "Tax Compliance System",
-            description: "Streamlined tax filing processes using iTax System, reducing compliance errors by 25% at KRA.",
-            image: "static/images/tax_compliance.jpg",
-            category: "tax",
-            technologies: ["iTax System", "Excel", "SQL", "JavaScript"],
-            liveLink: "#",
-            codeLink: "#"
-        },
-        {
-            id: "statisticalsurvey",
-            title: "Statistical Survey Analysis",
-            description: "Conducted survey analysis with R, providing actionable insights for client satisfaction strategies.",
-            image: "static/images/statistical_analysis.jpg",
-            category: "data",
-            technologies: ["R", "Excel", "SPSS", "Google Forms"],
-            liveLink: "#",
-            codeLink: "#"
-        },
-        {
-            id: "costoptimization",
-            title: "Cost Optimization Dashboard",
-            description: "Created an Excel-based dashboard for cost tracking, saving 15% in operational expenses.",
-            image: "static/images/cost_optimization.jpg",
-            category: "financial",
-            technologies: ["Excel", "VBA", "Power BI", "Streamlit"],
-            liveLink: "#",
-            codeLink: "#"
-        },
-        {
-            id: "taxaudit",
-            title: "Tax Audit Workflow",
-            description: "Designed an SQL-driven audit workflow, improving audit efficiency by 20% during KRA internship.",
-            image: "static/images/tax_audit.jpg",
-            category: "tax",
-            technologies: ["SQL", "Excel", "Power BI"],
-            liveLink: "https://pinaccleadvisorygroup.my.canva.site/",
-            codeLink: "#"
-        }
-    ];
+    if (!portfolioGrid) return;
 
-    // Render projects to the portfolio grid
+    function webpSrc(jpgPath) {
+      return jpgPath.replace(/\.(jpe?g|png)$/i, '.webp');
+    }
+
     function renderProjects(projects) {
-        console.log('Rendering projects:', projects);
-        if (!portfolioGrid) {
-            console.error('Portfolio grid not found');
-            return;
-        }
-        portfolioGrid.innerHTML = '';
-        const fallbackImage = 'static/images/profile.jpg';
+      portfolioGrid.innerHTML = '';
 
-        projects.forEach(project => {
-            console.log(`Attempting to load image for ${project.title}: ${project.image}`);
-            const portfolioItem = document.createElement('div');
-            portfolioItem.className = 'portfolio-item';
-            portfolioItem.setAttribute('data-category', project.category);
-            portfolioItem.setAttribute('data-project-id', project.id);
-            portfolioItem.innerHTML = `
-                <img src="${project.image}" alt="${project.title}" class="portfolio-img">
-                <div class="portfolio-overlay">
-                    <h3>${project.title}</h3>
-                    <p>${project.description}</p>
-                    <div class="portfolio-link">
-                        <a href="${project.liveLink}" target="_blank" style="display: ${project.liveLink !== '#' ? 'inline-block' : 'none'}" aria-label="View live project ${project.title}"><i class="fas fa-external-link-alt"></i></a>
-                        <a href="${project.codeLink}" target="_blank" style="display: ${project.codeLink !== '#' ? 'inline-block' : 'none'}" aria-label="View source code for ${project.title}"><i class="fas fa-code"></i></a>
-                        <button class="view-details-btn" aria-label="View details for ${project.title}">View Details</button>
-                    </div>
-                </div>
-            `;
-            portfolioGrid.appendChild(portfolioItem);
+      if (!projects.length) {
+        portfolioGrid.innerHTML = '<p class="error-message">No projects to display yet — check back soon.</p>';
+        return;
+      }
 
-            const img = portfolioItem.querySelector('img');
-            img.onerror = () => {
-                console.warn(`Failed to load image for ${project.title}: ${project.image}`);
-                img.src = fallbackImage;
-                img.onerror = () => {
-                    console.warn(`Failed to load fallback image: ${fallbackImage}`);
-                    img.src = 'https://via.placeholder.com/300x250?text=Image+Not+Found';
-                };
-            };
-            img.onload = () => {
-                console.log(`Successfully loaded image for ${project.title}: ${img.src}`);
-            };
+      projects.forEach((project, index) => {
+        const item = document.createElement('article');
+        item.className = 'portfolio-item';
+        item.style.animationDelay = `${Math.min(index, 6) * 60}ms`;
+        item.setAttribute('data-category', project.category);
+        item.setAttribute('data-project-id', project.id);
+
+        const hasLive = project.liveLink && project.liveLink !== '#';
+        const hasCode = project.codeLink && project.codeLink !== '#';
+        const techPreview = project.technologies.slice(0, 3);
+
+        item.innerHTML = `
+          <div class="portfolio-thumb">
+            <picture>
+              <source srcset="${webpSrc(project.image)}" type="image/webp">
+              <img src="${project.image}" alt="${escapeHtml(project.title)} preview" loading="lazy" width="400" height="220">
+            </picture>
+            <span class="portfolio-category-tag">${labelForCategory(project.category)}</span>
+          </div>
+          <div class="portfolio-body">
+            <h3>${escapeHtml(project.title)}</h3>
+            <p>${escapeHtml(project.description)}</p>
+            <div class="portfolio-tech-preview">
+              ${techPreview.map((t) => `<span>${escapeHtml(t)}</span>`).join('')}
+            </div>
+            <div class="portfolio-footer-row">
+              <div class="portfolio-link">
+                ${hasLive ? `<a href="${project.liveLink}" target="_blank" rel="noopener noreferrer" aria-label="View live project: ${escapeHtml(project.title)}"><i class="fas fa-external-link-alt" aria-hidden="true"></i></a>` : ''}
+                ${hasCode ? `<a href="${project.codeLink}" target="_blank" rel="noopener noreferrer" aria-label="View source code for ${escapeHtml(project.title)}"><i class="fas fa-code" aria-hidden="true"></i></a>` : ''}
+              </div>
+              <button type="button" class="view-details-btn" aria-label="View details for ${escapeHtml(project.title)}">Details <i class="fas fa-arrow-right" aria-hidden="true"></i></button>
+            </div>
+          </div>
+        `;
+
+        const img = item.querySelector('img');
+        img.addEventListener('error', () => {
+          if (img.src.indexOf(fallbackImage) === -1) img.src = fallbackImage;
         });
 
-        // Add event listeners for project modal
-        document.querySelectorAll('.view-details-btn').forEach(button => {
-            button.addEventListener('click', (e) => {
-                const projectId = e.target.closest('.portfolio-item').getAttribute('data-project-id');
-                const project = projectsData.find(p => p.id === projectId);
-                if (project && projectModal) {
-                    console.log(`Opening modal for project: ${project.title}`);
-                    const modalImage = document.getElementById('projectModalImage');
-                    modalImage.src = project.image || fallbackImage;
-                    modalImage.onerror = () => {
-                        console.warn(`Failed to load modal image for ${project.title}: ${project.image}`);
-                        modalImage.src = fallbackImage;
-                        modalImage.onerror = () => {
-                            console.warn(`Failed to load modal fallback image: ${fallbackImage}`);
-                            modalImage.src = 'https://via.placeholder.com/300x200?text=Image+Not+Found';
-                        };
-                    };
-                    modalImage.onload = () => {
-                        console.log(`Successfully loaded modal image for ${project.title}: ${modalImage.src}`);
-                    };
-                    document.getElementById('projectModalTitle').textContent = project.title;
-                    document.getElementById('projectModalDescription').textContent = project.description;
-                    const techList = document.getElementById('projectModalTechnologies');
-                    techList.innerHTML = project.technologies.map(tech => `<li>${tech}</li>`).join('');
-                    const liveLink = document.getElementById('projectModalLiveLink');
-                    liveLink.href = project.liveLink;
-                    liveLink.style.display = project.liveLink !== '#' ? 'inline-block' : 'none';
-                    const codeLink = document.getElementById('projectModalCodeLink');
-                    codeLink.href = project.codeLink;
-                    codeLink.style.display = project.codeLink !== '#' ? 'inline-block' : 'none';
+        portfolioGrid.appendChild(item);
+      });
 
-                    projectModal.classList.add('show');
-                    document.body.style.overflow = 'hidden';
-                    projectModal.focus();
-                }
-            });
+      portfolioGrid.querySelectorAll('.view-details-btn').forEach((button) => {
+        button.addEventListener('click', (e) => {
+          const projectId = e.target.closest('.portfolio-item').getAttribute('data-project-id');
+          const project = projectsData.find((p) => p.id === projectId);
+          if (project && projectModal) openProjectModal(project);
         });
+      });
     }
 
-    // Initialize portfolio filters
+    function openProjectModal(project) {
+      const modalImage = document.getElementById('projectModalImage');
+      modalImage.src = project.image || fallbackImage;
+      modalImage.alt = `${project.title} preview`;
+      modalImage.addEventListener(
+        'error',
+        () => {
+          if (modalImage.src.indexOf(fallbackImage) === -1) modalImage.src = fallbackImage;
+        },
+        { once: true }
+      );
+
+      document.getElementById('projectModalTitle').textContent = project.title;
+      document.getElementById('projectModalDescription').textContent = project.description;
+
+      const techList = document.getElementById('projectModalTechnologies');
+      techList.innerHTML = project.technologies.map((tech) => `<li>${escapeHtml(tech)}</li>`).join('');
+
+      const liveLink = document.getElementById('projectModalLiveLink');
+      const hasLive = project.liveLink && project.liveLink !== '#';
+      liveLink.href = project.liveLink || '#';
+      liveLink.style.display = hasLive ? 'inline-flex' : 'none';
+
+      const codeLink = document.getElementById('projectModalCodeLink');
+      const hasCode = project.codeLink && project.codeLink !== '#';
+      codeLink.href = project.codeLink || '#';
+      codeLink.style.display = hasCode ? 'inline-flex' : 'none';
+
+      openModal(document.getElementById('projectModal'));
+    }
+
+    function labelForCategory(category) {
+      const map = { data: 'Data Analysis', financial: 'Financial Analytics', tax: 'Tax Services' };
+      return map[category] || category;
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
     function initializeFilters() {
-        filterButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                filterButtons.forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
+      filterButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          filterButtons.forEach((btn) => {
+            btn.classList.remove('active');
+            btn.setAttribute('aria-pressed', 'false');
+          });
+          button.classList.add('active');
+          button.setAttribute('aria-pressed', 'true');
 
-                const filterValue = button.getAttribute('data-filter');
-                const portfolioItems = document.querySelectorAll('.portfolio-item');
-                portfolioItems.forEach(item => {
-                    item.style.display = (filterValue === 'all' || item.getAttribute('data-category') === filterValue)
-                        ? 'block' : 'none';
-                });
-            });
+          const filterValue = button.getAttribute('data-filter');
+          document.querySelectorAll('.portfolio-item').forEach((item) => {
+            const match = filterValue === 'all' || item.getAttribute('data-category') === filterValue;
+            item.classList.toggle('is-hidden', !match);
+          });
         });
+      });
     }
 
-    // Load projects from JSON or fallback
     fetch('projects.json')
-        .then(response => {
-            if (!response.ok) throw new Error('Network response was not ok');
-            return response.json();
-        })
-        .then(projects => {
-            console.log('Loaded projects from JSON:', projects);
-            projectsData = projects;
-            renderProjects(projects);
-            initializeFilters();
-        })
-        .catch(error => {
-            console.error('Error loading projects.json:', error);
-            portfolioGrid.innerHTML = '<p class="error-message">Unable to load projects. Displaying fallback projects.</p>';
-            projectsData = fallbackProjects;
-            renderProjects(fallbackProjects);
-            initializeFilters();
-        });
+      .then((response) => {
+        if (!response.ok) throw new Error('Network response was not ok');
+        return response.json();
+      })
+      .then((projects) => {
+        projectsData = projects;
+        renderProjects(projects);
+        initializeFilters();
+      })
+      .catch(() => {
+        portfolioGrid.innerHTML =
+          '<p class="error-message">Unable to load projects right now. Please refresh the page or try again shortly.</p>';
+      });
 
-    // Project Modal: Handle closing
     if (closeProjectModal && projectModal) {
-        closeProjectModal.addEventListener('click', () => {
-            projectModal.classList.remove('show');
-            document.body.style.overflow = 'auto';
-        });
-
-        window.addEventListener('click', (e) => {
-            if (e.target === projectModal) {
-                projectModal.classList.remove('show');
-                document.body.style.overflow = 'auto';
-            }
-        });
+      closeProjectModal.addEventListener('click', () => closeModalEl(projectModal));
+      projectModal.addEventListener('click', (e) => {
+        if (e.target === projectModal) closeModalEl(projectModal);
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && projectModal.classList.contains('show')) closeModalEl(projectModal);
+      });
     }
+  }
 
-    // Back to Top: Show/hide button and scroll to top
+  /* ------------------------------------------------------------------ */
+  /* Back to top                                                        */
+  /* ------------------------------------------------------------------ */
+  function initBackToTop() {
     const backToTopButton = document.querySelector('.back-to-top');
-    if (backToTopButton) {
-        window.addEventListener('scroll', () => {
-            backToTopButton.classList.toggle('active', window.pageYOffset > 300);
-        });
+    if (!backToTopButton) return;
 
-        backToTopButton.addEventListener('click', (e) => {
-            e.preventDefault();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-    }
+    window.addEventListener(
+      'scroll',
+      () => backToTopButton.classList.toggle('active', window.pageYOffset > 400),
+      { passive: true }
+    );
 
-    // Skill Bars Animation: Animate linear progress bars on scroll
-    const skillBars = document.querySelectorAll('.progress-line span');
+    backToTopButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
+    });
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* Linear skill bars                                                  */
+  /* ------------------------------------------------------------------ */
+  function initSkillBars() {
     const skillsSection = document.querySelector('.skills-section');
-    if (skillsSection && skillBars.length) {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    skillBars.forEach(bar => {
-                        const width = bar.parentElement.classList.contains('design') ? '95%' :
-                                      bar.parentElement.classList.contains('frontend') ? '90%' : '85%';
-                        bar.style.width = width;
-                    });
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.2 });
-        observer.observe(skillsSection);
-    }
+    const bars = document.querySelectorAll('.progress-line');
+    if (!skillsSection || !bars.length) return;
 
-    // Skills Section: Circular Progress Animation and Modal
+    const targetWidth = { design: '95%', frontend: '90%', backend: '85%' };
+
+    const observer = new IntersectionObserver(
+      (entries, obs) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          bars.forEach((bar) => {
+            const span = bar.querySelector('span');
+            const key = ['design', 'frontend', 'backend'].find((k) => bar.classList.contains(k));
+            const width = targetWidth[key] || '80%';
+            span.style.width = width;
+            bar.setAttribute('aria-valuenow', parseInt(width, 10));
+          });
+          obs.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.2 }
+    );
+
+    observer.observe(skillsSection);
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* Circular skill chips + modal                                       */
+  /* ------------------------------------------------------------------ */
+  function initSkillsPreview() {
     const skillItems = document.querySelectorAll('.skill-item');
     const skillModal = document.getElementById('skill-modal');
     const modalTitle = document.getElementById('modal-title');
     const modalPercentage = document.getElementById('modal-percentage');
     const modalDetails = document.getElementById('modal-details');
     const closeSkillModal = skillModal?.querySelector('.close-modal');
+    const closeSkillModalBtn = skillModal?.querySelector('[data-close-skill]');
+    if (!skillItems.length) return;
 
-    // Initialize Intersection Observer for circular progress bars
-    const circularObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const item = entry.target;
-                const percentage = parseInt(item.getAttribute('data-percentage'));
-                const progressCircle = item.querySelector('.progress-circle');
-                const percentageText = item.querySelector('.percentage-text');
-                const circumference = 226.2; // 2 * π * radius (36)
-                const offset = circumference * (1 - percentage / 100);
+    const circumference = 226.2; // 2 * PI * r(36)
 
-                // Set progress bar offset
-                progressCircle.style.strokeDashoffset = offset;
-                progressCircle.setAttribute('aria-valuenow', percentage);
+    const circularObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const item = entry.target;
+          const percentage = parseInt(item.getAttribute('data-percentage'), 10);
+          const progressCircle = item.querySelector('.progress-circle');
+          const percentageText = item.querySelector('.percentage-text');
+          const offset = circumference * (1 - percentage / 100);
 
-                // Animate percentage text
-                let currentPercentage = 0;
-                const interval = setInterval(() => {
-                    if (currentPercentage <= percentage) {
-                        percentageText.textContent = `${currentPercentage}%`;
-                        item.setAttribute('data-current-percentage', currentPercentage);
-                        currentPercentage++;
-                    } else {
-                        clearInterval(interval);
-                    }
-                }, 15);
+          progressCircle.style.strokeDashoffset = offset;
+          progressCircle.setAttribute('aria-valuenow', percentage);
 
-                circularObserver.unobserve(item);
-            }
+          if (prefersReducedMotion) {
+            percentageText.textContent = `${percentage}%`;
+            item.setAttribute('data-current-percentage', percentage);
+          } else {
+            let current = 0;
+            const interval = setInterval(() => {
+              if (current <= percentage) {
+                percentageText.textContent = `${current}%`;
+                item.setAttribute('data-current-percentage', current);
+                current++;
+              } else {
+                clearInterval(interval);
+              }
+            }, 14);
+          }
+
+          circularObserver.unobserve(item);
         });
-    }, { threshold: 0.5 });
+      },
+      { threshold: 0.5 }
+    );
 
-    // Setup skill items for animation and modal interaction
-    skillItems.forEach(item => {
-        const percentage = parseInt(item.getAttribute('data-percentage'));
-        const skillName = item.querySelector('span').textContent;
-        const details = item.getAttribute('data-details');
+    function showSkillModal(item) {
+      const percentage = parseInt(item.getAttribute('data-percentage'), 10);
+      const skillName = item.querySelector('span').textContent;
+      const details = item.getAttribute('data-details');
+      if (!modalTitle || !modalPercentage || !modalDetails || !skillModal) return;
 
-        // Make skill item focusable for accessibility
-        item.setAttribute('tabindex', '0');
-
-        // Observe for lazy loading
-        circularObserver.observe(item);
-
-        // Click event for modal
-        item.addEventListener('click', () => {
-            if (modalTitle && modalPercentage && modalDetails && skillModal) {
-                modalTitle.textContent = skillName;
-                modalPercentage.textContent = `${item.getAttribute('data-current-percentage') || percentage}% Proficiency`;
-                modalDetails.textContent = details;
-                skillModal.classList.add('show');
-                document.body.style.overflow = 'hidden';
-                skillModal.focus();
-            }
-        });
-
-        // Keyboard support for accessibility
-        item.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                if (modalTitle && modalPercentage && modalDetails && skillModal) {
-                    modalTitle.textContent = skillName;
-                    modalPercentage.textContent = `${item.getAttribute('data-current-percentage') || percentage}% Proficiency`;
-                    modalDetails.textContent = details;
-                    skillModal.classList.add('show');
-                    document.body.style.overflow = 'hidden';
-                    skillModal.focus();
-                }
-            }
-        });
-    });
-
-    // Close skill modal
-    if (closeSkillModal && skillModal) {
-        closeSkillModal.addEventListener('click', () => {
-            skillModal.classList.remove('show');
-            document.body.style.overflow = 'auto';
-        });
-
-        window.addEventListener('click', (e) => {
-            if (e.target === skillModal) {
-                skillModal.classList.remove('show');
-                document.body.style.overflow = 'auto';
-            }
-        });
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && skillModal.classList.contains('show')) {
-                skillModal.classList.remove('show');
-                document.body.style.overflow = 'auto';
-            }
-        });
+      modalTitle.textContent = skillName;
+      modalPercentage.textContent = `${item.getAttribute('data-current-percentage') || percentage}% Proficiency`;
+      modalDetails.textContent = details;
+      openModal(skillModal);
     }
 
-    // Dark Mode: Toggle and persist theme
+    skillItems.forEach((item) => {
+      item.setAttribute('tabindex', '0');
+      item.setAttribute('role', 'button');
+      circularObserver.observe(item);
+
+      item.addEventListener('click', () => showSkillModal(item));
+      item.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          showSkillModal(item);
+        }
+      });
+    });
+
+    function closeSkill() {
+      closeModalEl(skillModal);
+    }
+
+    closeSkillModal?.addEventListener('click', closeSkill);
+    closeSkillModalBtn?.addEventListener('click', closeSkill);
+    skillModal?.addEventListener('click', (e) => {
+      if (e.target === skillModal) closeSkill();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && skillModal?.classList.contains('show')) closeSkill();
+    });
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* Dark mode                                                          */
+  /* ------------------------------------------------------------------ */
+  function initDarkMode() {
     const darkModeToggle = document.querySelector('.dark-mode-toggle');
-    if (darkModeToggle) {
-        if (localStorage.getItem('darkMode') === 'enabled') {
-            document.body.classList.add('dark-mode');
-            darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-        }
+    if (!darkModeToggle) return;
 
-        darkModeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('dark-mode');
-            const isDarkMode = document.body.classList.contains('dark-mode');
-            darkModeToggle.innerHTML = isDarkMode ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
-            localStorage.setItem('darkMode', isDarkMode ? 'enabled' : 'disabled');
-        });
+    function applyMode(isDark) {
+      document.body.classList.toggle('dark-mode', isDark);
+      darkModeToggle.innerHTML = isDark ? '<i class="fas fa-sun" aria-hidden="true"></i>' : '<i class="fas fa-moon" aria-hidden="true"></i>';
+      darkModeToggle.setAttribute('aria-pressed', String(isDark));
+      darkModeToggle.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
     }
 
-    // Smooth Scrolling: For anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            e.preventDefault();
-            const targetId = this.getAttribute('href');
-            if (targetId === '#') return;
+    let stored = null;
+    try {
+      stored = localStorage.getItem('darkMode');
+    } catch (e) {
+      /* localStorage unavailable (private mode, etc.) — fall back silently */
+    }
 
-            const targetElement = document.querySelector(targetId);
-            if (targetElement) {
-                window.scrollTo({
-                    top: targetElement.offsetTop - 80,
-                    behavior: 'smooth'
-                });
-            }
-        });
+    applyMode(stored === 'enabled');
+
+    darkModeToggle.addEventListener('click', () => {
+      const isDark = !document.body.classList.contains('dark-mode');
+      applyMode(isDark);
+      try {
+        localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
+      } catch (e) {
+        /* ignore write failures */
+      }
     });
+  }
 
-    // Track CV Downloads: Log with Cloudflare Analytics
-    window.trackCVDownload = function() {
-        if (typeof window.cfAnalytics !== 'undefined' && window.cfAnalytics.logEvent) {
-            window.cfAnalytics.logEvent({
-                name: 'cv_download',
-                properties: { file: 'Slevin_Resume.pdf' }
-            });
-        } else {
-            console.warn('Cloudflare Web Analytics not initialized');
-        }
-    };
-});
+  /* ------------------------------------------------------------------ */
+  /* Smooth scrolling for in-page anchors                                */
+  /* ------------------------------------------------------------------ */
+  function initSmoothScroll() {
+    document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+      anchor.addEventListener('click', function (e) {
+        const targetId = this.getAttribute('href');
+        if (targetId === '#' || targetId.length < 2) return;
+        const targetElement = document.querySelector(targetId);
+        if (!targetElement) return;
+
+        e.preventDefault();
+        const headerHeight = document.querySelector('header')?.offsetHeight || 0;
+        window.scrollTo({
+          top: targetElement.offsetTop - headerHeight,
+          behavior: prefersReducedMotion ? 'auto' : 'smooth',
+        });
+        history.pushState(null, '', targetId);
+      });
+    });
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* Ripple button micro-interaction                                    */
+  /* ------------------------------------------------------------------ */
+  function initRippleButtons() {
+    document.body.addEventListener('click', (e) => {
+      const btn = e.target.closest('.btn.ripple');
+      if (!btn) return;
+      const rect = btn.getBoundingClientRect();
+      btn.style.setProperty('--ripple-x', `${e.clientX - rect.left}px`);
+      btn.style.setProperty('--ripple-y', `${e.clientY - rect.top}px`);
+      btn.classList.remove('rippling');
+      // Force reflow so the animation can restart on rapid clicks
+      void btn.offsetWidth;
+      btn.classList.add('rippling');
+    });
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* CV download tracking (Cloudflare Web Analytics, if present)        */
+  /* ------------------------------------------------------------------ */
+  window.trackCVDownload = function trackCVDownload() {
+    if (typeof window.cfAnalytics !== 'undefined' && window.cfAnalytics.logEvent) {
+      window.cfAnalytics.logEvent({ name: 'cv_download', properties: { file: 'Slevin_Resume.pdf' } });
+    }
+  };
+})();
