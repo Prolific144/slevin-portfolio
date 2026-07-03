@@ -3,411 +3,334 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="404 Page Not Found - Slevin Onono's Portfolio">
-    <meta name="keywords" content="Slevin Onono, 404, Data Analyst, Statistician, Web Developer, Portfolio">
+    <meta name="description" content="404 - Page Not Found | Slevin Onono's Portfolio">
+    <meta name="robots" content="noindex, follow">
     <meta name="author" content="Slevin Onono">
+    <meta name="theme-color" content="#4361ee">
     <title>404 - Page Not Found | Slevin Onono</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
     <link rel="stylesheet" href="static/css/styles.css">
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="preload" href="static/images/error-bg.jpg" as="image">
-    <link rel="preload" href="static/images/placeholder.jpg" as="image">
+    <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="static/images/favicon.ico">
+
     <style>
-        /* 404-Specific Styles */
+        /* Page-specific styles for the 404 experience */
         .error-section {
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
-            background: var(--bg-light) url('static/images/error-bg.jpg') no-repeat center/cover;
+            background: var(--bg-alt);
             overflow: hidden;
-            padding: 80px 20px;
-        }
-
-        .error-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--gradient);
-            opacity: 0.7;
-            z-index: 1;
+            padding: calc(var(--header-h) + var(--space-7)) var(--space-5) var(--space-8);
         }
 
         .error-content {
             position: relative;
             z-index: 2;
             text-align: center;
-            max-width: 800px;
-            padding: 40px;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            animation: fadeIn 1s ease;
-            will-change: transform, opacity;
-        }
-
-        .dark-mode .error-content {
-            background: rgba(26, 26, 46, 0.95);
-            color: var(--text-color);
+            max-width: 640px;
+            padding: var(--space-8) var(--space-7);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-xl);
         }
 
         .error-graphic {
-            width: 200px;
-            height: 200px;
-            margin: 0 auto 20px;
+            width: 140px;
+            height: 140px;
+            margin: 0 auto var(--space-5);
             position: relative;
-            animation: float 4s ease-in-out infinite;
+            animation: float404 4s ease-in-out infinite;
         }
 
         .error-graphic svg {
             width: 100%;
             height: 100%;
-            fill: var(--primary-color);
-            filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.2));
+            filter: drop-shadow(0 10px 18px rgba(67, 97, 238, 0.25));
         }
 
-        .dark-mode .error-graphic svg {
-            fill: var(--primary-color);
-        }
-
-        @keyframes float {
+        @keyframes float404 {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
+            50% { transform: translateY(-12px); }
         }
 
         .error-code {
-            font-size: 6rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            margin-bottom: 20px;
-            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+            font-family: var(--font-display);
+            font-size: clamp(3.5rem, 3rem + 3vw, 5.5rem);
+            font-weight: 800;
+            background: var(--gradient-text);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1;
+            margin-bottom: var(--space-3);
         }
 
         .error-title {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            color: var(--dark-color);
+            font-size: var(--fs-2xl);
+            margin-bottom: var(--space-4);
+            color: var(--navy);
         }
 
         .error-message {
-            font-size: 1.2rem;
-            margin-bottom: 30px;
-            color: var(--text-light);
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
+            font-size: var(--fs-base);
+            margin: 0 auto var(--space-6);
+            color: var(--text-muted);
+            max-width: 460px;
+            background: none;
+            border: none;
+            padding: 0;
+            animation: none;
         }
 
         .error-actions {
             display: flex;
-            gap: 20px;
+            gap: var(--space-3);
             justify-content: center;
             flex-wrap: wrap;
-            margin-bottom: 30px;
+            margin-bottom: var(--space-6);
         }
 
         .redirect-timer {
-            font-size: 1rem;
-            color: var(--text-color);
-            margin-bottom: 20px;
+            font-size: var(--fs-sm);
+            color: var(--text-muted);
+            margin-bottom: var(--space-6);
         }
 
         .redirect-timer span {
             font-weight: 700;
-            color: var(--primary-color);
-        }
-
-        .suggested-links {
-            margin-top: 30px;
+            color: var(--primary);
         }
 
         .suggested-links h3 {
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-            color: var(--primary-color);
+            font-size: var(--fs-base);
+            margin-bottom: var(--space-4);
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            font-weight: 700;
         }
 
         .suggested-links ul {
-            list-style: none;
             display: flex;
             flex-wrap: wrap;
-            gap: 15px;
+            gap: var(--space-3);
             justify-content: center;
-        }
-
-        .suggested-links li {
-            position: relative;
         }
 
         .suggested-links a {
             display: inline-block;
-            padding: 10px 20px;
-            background: var(--bg-light);
-            border-radius: var(--border-radius);
-            font-weight: 500;
-            color: var(--dark-color);
+            padding: 10px 22px;
+            background: var(--bg-alt);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-pill);
+            font-weight: 600;
+            font-size: var(--fs-sm);
+            color: var(--navy);
             transition: var(--transition);
         }
 
         .suggested-links a:hover {
-            background: var(--primary-color);
+            background: var(--primary);
+            border-color: var(--primary);
             color: #fff;
             transform: translateY(-3px);
-            box-shadow: 0 0 15px var(--glow-color);
-        }
-
-        .dark-mode .suggested-links a {
-            background: var(--light-color);
-        }
-
-        .dark-mode .suggested-links a:hover {
-            background: var(--primary-color);
-            color: #fff;
-        }
-
-        /* Parallax Effect */
-        .error-section[data-parallax] {
-            background-attachment: fixed;
-        }
-
-        /* Responsive Adjustments */
-        @media (max-width: 768px) {
-            .error-code {
-                font-size: 4rem;
-            }
-
-            .error-title {
-                font-size: 2rem;
-            }
-
-            .error-graphic {
-                width: 150px;
-                height: 150px;
-            }
-
-            .error-content {
-                padding: 20px;
-            }
-
-            .error-actions {
-                flex-direction: column;
-                align-items: center;
-            }
+            box-shadow: var(--shadow-glow);
         }
 
         @media (max-width: 576px) {
-            .error-code {
-                font-size: 3rem;
-            }
-
-            .error-title {
-                font-size: 1.5rem;
-            }
-
-            .error-message {
-                font-size: 1rem;
-            }
-
-            .suggested-links ul {
-                flex-direction: column;
-                align-items: center;
-            }
+            .error-content { padding: var(--space-6) var(--space-5); }
+            .error-actions { flex-direction: column; align-items: stretch; }
         }
     </style>
 </head>
 <body>
-    <div class="custom-cursor"></div>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <div class="custom-cursor" aria-hidden="true"></div>
+
     <header>
-        <nav class="container">
+        <nav class="container" aria-label="Primary">
             <div class="logo">
-                <a href="index.html">Slevin<span>.</span></a>
+                <a href="index.html"><span>S</span>levin<span>.</span></a>
             </div>
-            <ul class="nav-links" aria-expanded="false">
+            <ul class="nav-links" id="nav-links" aria-expanded="false">
+                <li class="close-menu-item"><button class="close-menu" aria-label="Close menu"><i class="fas fa-times" aria-hidden="true"></i></button></li>
                 <li><a href="index.html#home">Home</a></li>
                 <li><a href="index.html#skills">Skills</a></li>
-                <li><a href="index.html#portfolio">Projects</a></li>
+                <li><a href="index.html#projects">Projects</a></li>
                 <li><a href="index.html#contact" class="contact-btn">Contact</a></li>
             </ul>
-            <button class="dark-mode-toggle" aria-label="Toggle dark mode"><i class="fas fa-moon"></i></button>
-            <div class="menu-toggle" aria-label="Open menu"><i class="fas fa-bars"></i></div>
-            <div class="close-menu" aria-label="Close menu"><i class="fas fa-times"></i></div>
+            <div class="nav-controls">
+                <button class="dark-mode-toggle" aria-label="Toggle dark mode" aria-pressed="false"><i class="fas fa-moon" aria-hidden="true"></i></button>
+                <button class="menu-toggle" aria-label="Open menu" aria-controls="nav-links" aria-expanded="false"><i class="fas fa-bars" aria-hidden="true"></i></button>
+            </div>
         </nav>
     </header>
+    <div class="nav-backdrop" id="nav-backdrop"></div>
 
-    <section class="error-section" data-parallax>
-        <div class="container">
-            <div class="error-content" data-aos="zoom-in" role="alert">
-                <div class="error-graphic">
-                    <svg viewBox="0 0 100 100" aria-hidden="true">
-                        <circle cx="50" cy="50" r="45" stroke="var(--primary-color)" stroke-width="5" fill="none"/>
-                        <text x="50" y="60" font-size="30" text-anchor="middle" fill="var(--primary-color)">404</text>
-                    </svg>
-                </div>
-                <h1 class="error-code">404</h1>
-                <h2 class="error-title">Page Not Found</h2>
-                <p class="error-message">It looks like you've wandered off the path. The page you're looking for doesn't exist or has been moved. Let's guide you back to something awesome!</p>
-                <div class="error-actions">
-                    <a href="index.html" class="btn ripple" aria-label="Return to homepage">Return Home</a>
-                    <a href="index.html#contact" class="btn secondary ripple" aria-label="Contact Slevin Onono">Contact Me</a>
-                    <a href="Slevin_Resume.pdf" download class="btn secondary ripple" onclick="trackCVDownload()" aria-label="Download Slevin Onono's resume">Download Resume</a>
-                </div>
-                <div class="redirect-timer" aria-live="polite">
-                    <p>Redirecting to homepage in <span id="countdown">15</span> seconds...</p>
-                </div>
-                <div class="suggested-links" data-aos="fade-up" data-aos-delay="200">
-                    <h3>Explore These Pages:</h3>
-                    <ul>
-                        <li><a href="index.html#home" aria-label="Go to Home section">Home</a></li>
-                        <li><a href="index.html#skills" aria-label="Go to Skills section">Skills</a></li>
-                        <li><a href="index.html#portfolio" aria-label="Go to Projects section">Projects</a></li>
-                        <li><a href="index.html#contact" aria-label="Go to Contact section">Contact</a></li>
-                    </ul>
+    <main id="main-content">
+        <section class="error-section">
+            <div class="ambient-grid" aria-hidden="true"></div>
+            <div class="aurora aurora-1" aria-hidden="true"></div>
+            <div class="aurora aurora-3" aria-hidden="true"></div>
+
+            <div class="container">
+                <div class="error-content" data-aos="zoom-in" role="alert">
+                    <div class="error-graphic" aria-hidden="true">
+                        <svg viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="45" stroke="var(--primary)" stroke-width="5" fill="none"/>
+                            <text x="50" y="60" font-size="26" text-anchor="middle" fill="var(--primary)" font-family="Poppins, sans-serif" font-weight="700">404</text>
+                        </svg>
+                    </div>
+                    <p class="error-code">404</p>
+                    <h1 class="error-title">Page Not Found</h1>
+                    <p class="error-message">It looks like you've wandered off the path. The page you're looking for doesn't exist or has been moved — let's get you back to something useful.</p>
+                    <div class="error-actions">
+                        <a href="index.html" class="btn ripple" aria-label="Return to homepage">Return Home</a>
+                        <a href="index.html#contact" class="btn secondary ripple" aria-label="Contact Slevin Onono">Contact Me</a>
+                        <a href="static/documents/Slevin_Resume.pdf" download class="btn ghost ripple" onclick="trackCVDownload()" aria-label="Download Slevin Onono's resume">Download Resume</a>
+                    </div>
+                    <div class="redirect-timer" aria-live="polite">
+                        <p>Redirecting to homepage in <span id="countdown">15</span> seconds…</p>
+                    </div>
+                    <div class="suggested-links" data-aos="fade-up" data-aos-delay="150">
+                        <h3>Explore These Pages</h3>
+                        <ul>
+                            <li><a href="index.html#home" aria-label="Go to Home section">Home</a></li>
+                            <li><a href="index.html#skills" aria-label="Go to Skills section">Skills</a></li>
+                            <li><a href="index.html#projects" aria-label="Go to Projects section">Projects</a></li>
+                            <li><a href="index.html#contact" aria-label="Go to Contact section">Contact</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </main>
 
-    <footer id="contact">
+    <footer id="contact" aria-label="Footer">
         <div class="footer-content container">
             <div class="footer-logo">
-                <a href="index.html">Slevin<span>.</span></a>
+                <a href="index.html"><span>S</span>levin<span>.</span></a>
             </div>
             <div class="footer-links">
                 <a href="index.html#home">Home</a>
                 <a href="index.html#skills">Skills</a>
-                <a href="index.html#portfolio">Projects</a>
+                <a href="index.html#projects">Projects</a>
                 <a href="index.html#contact" class="contact-btn">Contact</a>
             </div>
             <div class="social-links">
-                <a href="#" aria-label="Visit Slevin Onono's LinkedIn profile"><i class="fab fa-linkedin"></i></a>
-                <a href="#" aria-label="Visit Slevin Onono's GitHub profile"><i class="fab fa-github"></i></a>
-                <a href="#" aria-label="Visit Slevin Onono's Twitter profile"><i class="fab fa-twitter"></i></a>
+                <a href="#" aria-label="Visit Slevin Onono's LinkedIn profile"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
+                <a href="#" aria-label="Visit Slevin Onono's GitHub profile"><i class="fab fa-github" aria-hidden="true"></i></a>
+                <a href="#" aria-label="Visit Slevin Onono's Twitter profile"><i class="fab fa-twitter" aria-hidden="true"></i></a>
             </div>
             <div class="footer-copyright">
-                <p>© 2025 Slevin Onono. All rights reserved.</p>
+                <p>&copy; 2025 Slevin Onono. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
-    <a href="#" class="back-to-top" aria-label="Scroll to top"><i class="fas fa-arrow-up"></i></a>
+    <a href="index.html#home" class="back-to-top" aria-label="Scroll to top"><i class="fas fa-chevron-up" aria-hidden="true"></i></a>
 
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>
-        // Initialize when DOM is fully loaded
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js" defer></script>
+    <script defer>
         document.addEventListener('DOMContentLoaded', () => {
-            // Initialize AOS for scroll animations
-            AOS.init({ duration: 1000, once: true, easing: 'ease-out' });
+            if (typeof AOS !== 'undefined') AOS.init({ duration: 700, once: true, easing: 'ease-out-cubic' });
 
-            // Mobile Menu: Toggle navigation menu for mobile devices
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            /* Mobile menu */
             const menuToggle = document.querySelector('.menu-toggle');
             const closeMenu = document.querySelector('.close-menu');
             const navLinks = document.querySelector('.nav-links');
+            const backdrop = document.getElementById('nav-backdrop');
 
             if (menuToggle && closeMenu && navLinks) {
-                menuToggle.addEventListener('click', () => {
+                const openMenu = () => {
                     navLinks.classList.add('active');
                     navLinks.setAttribute('aria-expanded', 'true');
                     menuToggle.setAttribute('aria-expanded', 'true');
-                });
-
-                closeMenu.addEventListener('click', () => {
+                    backdrop?.classList.add('active');
+                };
+                const closeMenuFn = () => {
                     navLinks.classList.remove('active');
                     navLinks.setAttribute('aria-expanded', 'false');
                     menuToggle.setAttribute('aria-expanded', 'false');
-                });
-
-                document.querySelectorAll('.nav-links a').forEach(link => {
-                    link.addEventListener('click', () => {
-                        navLinks.classList.remove('active');
-                        navLinks.setAttribute('aria-expanded', 'false');
-                        menuToggle.setAttribute('aria-expanded', 'false');
-                    });
+                    backdrop?.classList.remove('active');
+                };
+                menuToggle.addEventListener('click', openMenu);
+                closeMenu.addEventListener('click', closeMenuFn);
+                backdrop?.addEventListener('click', closeMenuFn);
+                document.querySelectorAll('.nav-links a').forEach((link) => link.addEventListener('click', closeMenuFn));
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && navLinks.classList.contains('active')) closeMenuFn();
                 });
             }
 
-            // Sticky Header: Add 'scrolled' class to header when scrolling past 100px
+            /* Sticky header */
             const header = document.querySelector('header');
-            window.addEventListener('scroll', () => {
-                if (header) {
-                    header.classList.toggle('scrolled', window.scrollY > 100);
-                }
-            });
+            window.addEventListener('scroll', () => header && header.classList.toggle('scrolled', window.scrollY > 40), { passive: true });
 
-            // Custom Cursor: Position custom cursor on mouse move
-            const customCursor = document.querySelector('.custom-cursor');
-            if (customCursor) {
+            /* Custom cursor */
+            const cursor = document.querySelector('.custom-cursor');
+            if (cursor && !window.matchMedia('(hover: none), (pointer: coarse)').matches) {
                 document.addEventListener('mousemove', (e) => {
-                    customCursor.style.left = `${e.clientX}px`;
-                    customCursor.style.top = `${e.clientY}px`;
+                    cursor.style.opacity = '1';
+                    cursor.style.left = e.clientX + 'px';
+                    cursor.style.top = e.clientY + 'px';
                 });
-
-                document.querySelectorAll('.btn, .suggested-links a').forEach(item => {
-                    item.addEventListener('mouseenter', () => {
-                        customCursor.classList.add('active');
-                    });
-                    item.addEventListener('mouseleave', () => {
-                        customCursor.classList.remove('active');
-                    });
+                document.querySelectorAll('.btn, .suggested-links a').forEach((item) => {
+                    item.addEventListener('mouseenter', () => cursor.classList.add('active'));
+                    item.addEventListener('mouseleave', () => cursor.classList.remove('active'));
                 });
             }
 
-            // Ripple Effect for Buttons
-            document.querySelectorAll('.btn.ripple').forEach(button => {
-                button.addEventListener('click', (e) => {
-                    const rect = button.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-                    button.style.setProperty('--ripple-x', `${x}px`);
-                    button.style.setProperty('--ripple-y', `${y}px`);
-                });
+            /* Ripple buttons */
+            document.body.addEventListener('click', (e) => {
+                const btn = e.target.closest('.btn.ripple');
+                if (!btn) return;
+                const rect = btn.getBoundingClientRect();
+                btn.style.setProperty('--ripple-x', `${e.clientX - rect.left}px`);
+                btn.style.setProperty('--ripple-y', `${e.clientY - rect.top}px`);
+                btn.classList.remove('rippling');
+                void btn.offsetWidth;
+                btn.classList.add('rippling');
             });
 
-            // Dark Mode: Toggle and persist dark mode theme
+            /* Dark mode (persisted, shared with the homepage) */
             const darkModeToggle = document.querySelector('.dark-mode-toggle');
             if (darkModeToggle) {
-                if (localStorage.getItem('darkMode') === 'enabled') {
-                    document.body.classList.add('dark-mode');
-                    darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-                    darkModeToggle.setAttribute('aria-label', 'Switch to light mode');
-                }
-
+                let stored = null;
+                try { stored = localStorage.getItem('darkMode'); } catch (e) {}
+                const applyMode = (isDark) => {
+                    document.body.classList.toggle('dark-mode', isDark);
+                    darkModeToggle.innerHTML = isDark ? '<i class="fas fa-sun" aria-hidden="true"></i>' : '<i class="fas fa-moon" aria-hidden="true"></i>';
+                    darkModeToggle.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+                };
+                applyMode(stored === 'enabled');
                 darkModeToggle.addEventListener('click', () => {
-                    document.body.classList.toggle('dark-mode');
-                    const isDarkMode = document.body.classList.contains('dark-mode');
-                    darkModeToggle.innerHTML = isDarkMode ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
-                    darkModeToggle.setAttribute('aria-label', isDarkMode ? 'Switch to light mode' : 'Switch to dark mode');
-                    localStorage.setItem('darkMode', isDarkMode ? 'enabled' : 'disabled');
+                    const isDark = !document.body.classList.contains('dark-mode');
+                    applyMode(isDark);
+                    try { localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled'); } catch (e) {}
                 });
             }
 
-            // Back to Top: Show/hide button and scroll to top
+            /* Back to top */
             const backToTopButton = document.querySelector('.back-to-top');
             if (backToTopButton) {
-                window.addEventListener('scroll', () => {
-                    backToTopButton.classList.toggle('active', window.pageYOffset > 300);
-                });
-
-                backToTopButton.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                });
+                window.addEventListener('scroll', () => backToTopButton.classList.toggle('active', window.pageYOffset > 300), { passive: true });
             }
 
-            // Countdown Timer: Auto-redirect to homepage after 15 seconds
+            /* Countdown redirect */
             const countdownElement = document.getElementById('countdown');
             let timeLeft = 15;
-
             if (countdownElement) {
                 const countdownInterval = setInterval(() => {
                     timeLeft--;
@@ -417,74 +340,17 @@
                         window.location.href = 'index.html';
                     }
                 }, 1000);
+
+                // Pause the redirect if the visitor is actively reading/interacting
+                document.querySelector('.error-content')?.addEventListener('mouseenter', () => clearInterval(countdownInterval));
             }
 
-            // Smooth Scrolling: Redirect to index.html with hash for anchor links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const targetId = this.getAttribute('href');
-                    if (targetId === '#') return;
-                    window.location.href = `index.html${targetId}`;
-                });
-            });
-
-            // Lazy Load Images: Add fade-in effect
-            const lazyImages = document.querySelectorAll('img.lazy-load');
-            const imageObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const img = entry.target;
-                        img.classList.add('loaded');
-                        imageObserver.unobserve(img);
-                    }
-                });
-            }, { threshold: 0.1 });
-
-            lazyImages.forEach(img => {
-                img.onerror = () => {
-                    img.src = 'static/images/placeholder.jpg';
-                    img.alt = 'Placeholder Image';
-                    img.classList.add('loaded');
-                };
-                imageObserver.observe(img);
-            });
-
-            // Parallax Effect: Subtle background movement on scroll
-            const errorSection = document.querySelector('.error-section');
-            if (errorSection) {
-                window.addEventListener('scroll', () => {
-                    const scrollPosition = window.pageYOffset;
-                    errorSection.style.backgroundPositionY = `${scrollPosition * 0.3}px`;
-                });
-            }
-
-            // Track CV Downloads: Log CV download events
-            window.trackCVDownload = function() {
+            /* CV download tracking */
+            window.trackCVDownload = function () {
                 if (typeof window.cfAnalytics !== 'undefined' && window.cfAnalytics.logEvent) {
-                    window.cfAnalytics.logEvent({
-                        name: 'cv_download',
-                        properties: { file: 'Slevin_Resume.pdf' }
-                    });
-                } else {
-                    console.warn('Cloudflare Web Analytics not initialized');
+                    window.cfAnalytics.logEvent({ name: 'cv_download', properties: { file: 'Slevin_Resume.pdf' } });
                 }
             };
-
-            // Accessibility: Focus management on page load
-            const errorContent = document.querySelector('.error-content');
-            if (errorContent) {
-                errorContent.focus();
-            }
-
-            // Keyboard Navigation: Close mobile menu on Escape key
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && navLinks.classList.contains('active')) {
-                    navLinks.classList.remove('active');
-                    navLinks.setAttribute('aria-expanded', 'false');
-                    menuToggle.setAttribute('aria-expanded', 'false');
-                }
-            });
         });
     </script>
 </body>
