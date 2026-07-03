@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Slevin Onono's Portfolio - Data Analyst, Statistician, and Web Developer">
+    <meta name="keywords" content="Slevin Onono, Data Analyst, Statistician, Web Developer, Portfolio">
+    <meta name="author" content="Slevin Onono">
+    <title>Slevin Onono | Portfolio</title>
+    <link rel="stylesheet" href="static/css/styles.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preload" href="static/images/profile.jpg" as="image">
+    <link rel="preload" href="static/images/profile2.jpg" as="image">
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.7.0/dist/vanilla-tilt.min.js" defer></script>
+    <link rel="icon" type="image/x-icon" href="static/images/favicon.ico">
+</head>
+<body>
+    <!-- Custom Cursor -->
+    <div class="custom-cursor"></div>
+
+    <!-- Header Section -->
+    <header>
+        <nav class="container">
+            <div class="logo">
+                <a href="#"><span>S</span>levin<span>.</span></a>
+            </div>
+            <ul class="nav-links" aria-expanded="false">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#contact" class="contact-btn">Contact</a></li>
+            </ul>
+            <button class="menu-toggle" aria-label="Open menu"><i class="fas fa-bars"></i></button>
+            <button class="close-menu" aria-label="Close menu"><i class="fas fa-times"></i></button>
+            <button class="dark-mode-toggle" aria-label="Toggle dark mode"><i class="fas fa-moon"></i></button>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section">
+        <div class="hero-content container">
+            <div class="hero-text" data-aos="fade-right">
+                <h3>Hello, I'm</h3>
+                <h1>Slevin Onono</h1>
+                <h3>And I'm a <span class="typed-text"></span><span class="cursor">&nbsp;</span></h3>
+                <p>Highly motivated data professional with 4+ years of experience in the digital industry, committed to continuous learning and growth. Proven ability to transform raw data into actionable insights and effective strategies. Eager to contribute to challenging projects and expand my expertise.</p>
+                <div class="hero-btns">
+                    <a href="static/Slevin_Resume.pdf" class="btn resume-btn ripple" download onclick="trackCVDownload()">Download My Resume</a>
+                    <button class="btn secondary contact-btn ripple" aria-label="Open contact form">Say Hello</button>
+                    <a href="#projects" class="btn secondary ripple">View Project</a>
+                </div>
+            </div>
+            <div class="hero-image" data-aos="fade-left">
+                <div class="image-wrapper">
+                    <div class="image-overlay"></div>
+                    <img src="static/images/profile.jpg" alt="Slevin Onono" class="lazy-load">
+                </div>
+        </div>
+        <div class="scroll-indicator">
+            <span>Scroll Down</span>
+            <div class="arrow-down"></div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="skills-section">
+        <div class="container">
+            <h2 class="section-title">My <span>Skills</span></h2>
+            <div class="skills-container">
+                <!-- Technical Skills -->
+                <div class="skill-category" data-aos="fade-up">
+                    <h3>Technical Skills</h3>
+                    <div class="skill-bars">
+                        <div class="bar">
+                            <div class="info">
+                                <span>Data Analysis</span>
+                                <span>95%</span>
+                            </div>
+                            <div class="progress-line design"><span></span></div>
+                        </div>
+                        <div class="bar">
+                            <div class="info">
+                                <span>Statistical Modeling</span>
+                                <span>90%</span>
+                            </div>
+                            <div class="progress-line frontend"><span></span></div>
+                        </div>
+                        <div class="bar">
+                            <div class="info">
+                                <span>Data Visualization</span>
+                                <span>85%</span>
+                            </div>
+                            <div class="progress-line backend"><span></span></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Professional Skills -->
+                <div class="skill-category" data-aos="fade-up" data-aos-delay="200">
+                    <h3>Professional Skills</h3>
+                    <div class="skill-bars">
+                        <div class="bar">
+                            <div class="info">
+                                <span>Analytical Thinking</span>
+                                <span>95%</span>
+                            </div>
+                            <div class="progress-line design"><span></span></div>
+                        </div>
+                        <div class="bar">
+                            <div class="info">
+                                <span>Communication</span>
+                                <span>90%</span>
+                            </div>
+                            <div class="progress-line frontend"><span></span></div>
+                        </div>
+                        <div class="bar">
+                            <div class="info">
+                                <span>Project Management</span>
+                                <span>85%</span>
+                            </div>
+                            <div class="progress-line backend"><span></span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Skills Preview -->
+            <div class="skills-preview" data-aos="fade-up" data-aos-delay="400">          
+                <div class="skills-grid">
+                    <div class="skill-item technical" data-percentage="95" data-details="Advanced data processing">
+                        <div class="circular-progress">
+                            <svg width="80" height="80">
+                                <circle class="background-circle" cx="40" cy="40" r="36" />
+                                <circle class="progress-circle" cx="40" cy="40" r="36" />
+                                <circle class="inner-circle" cx="40" cy="40" r="30" />
+                            </svg>
+                            <span class="percentage-text">100%</span>
+                        </div>
+                        <span>Data Analysis</span>
+                        <div class="tooltip">Advanced data processing</div>
+                    </div>
+                    <div class="skill-item technical" data-percentage="90" data-details="Regression & predictive models">
+                        <div class="circular-progress">
+                            <svg width="80" height="80">
+                                <circle class="background-circle" cx="40" cy="40" r="36" />
+                                <circle class="progress-circle" cx="40" cy="40" r="36" />
+                                <circle class="inner-circle" cx="40" cy="40" r="30" />
+                            </svg>
+                            <span class="percentage-text">100%</span>
+                        </div>
+                        <span>Statistical Modeling</span>
+                        <div class="tooltip">Regression & predictive models</div>
+                    </div>
+                    <div class="skill-item technical" data-percentage="85" data-details="Charts & dashboards">
+                        <div class="circular-progress">
+                            <svg width="80" height="80">
+                                <circle class="background-circle" cx="40" cy="40" r="36" />
+                                <circle class="progress-circle" cx="40" cy="40" r="36" />
+                                <circle class="inner-circle" cx="40" cy="40" r="30" />
+                            </svg>
+                            <span class="percentage-text">100%</span>
+                        </div>
+                        <span>Data Visualization</span>
+                        <div class="tooltip">Charts & dashboards</div>
+                    </div>
+                    <div class="skill-item technical" data-percentage="80" data-details="Python, JavaScript">
+                        <div class="circular-progress">
+                            <svg width="80" height="80">
+                                <circle class="background-circle" cx="40" cy="40" r="36" />
+                                <circle class="progress-circle" cx="40" cy="40" r="36" />
+                                <circle class="inner-circle" cx="40" cy="40" r="30" />
+                            </svg>
+                            <span class="percentage-text">100%</span>
+                        </div>
+                        <span>Programming</span>
+                        <div class="tooltip">Python, JavaScript</div>
+                    </div>
+                    <div class="skill-item professional" data-percentage="85" data-details="Safe & efficient">
+                        <div class="circular-progress">
+                            <svg width="80" height="80">
+                                <circle class="background-circle" cx="40" cy="40" r="36" />
+                                <circle class="progress-circle" cx="40" cy="40" r="36" />
+                                <circle class="inner-circle" cx="40" cy="40" r="30" />
+                            </svg>
+                            <span class="percentage-text">100%</span>
+                        </div>
+                        <span>Driving</span>
+                        <div class="tooltip">Safe & efficient</div>
+                    </div>
+                    <div class="skill-item professional" data-percentage="80" data-details="Financial reporting">
+                        <div class="circular-progress">
+                            <svg width="80" height="80">
+                                <circle class="background-circle" cx="40" cy="40" r="36" />
+                                <circle class="progress-circle" cx="40" cy="40" r="36" />
+                                <circle class="inner-circle" cx="40" cy="40" r="30" />
+                            </svg>
+                            <span class="percentage-text">100%</span>
+                        </div>
+                        <span>Accounting</span>
+                        <div class="tooltip">Financial reporting</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="portfolio-section">
+        <div class="container">
+            <h2 class="section-title">My <span>Projects</span></h2>
+            <div class="portfolio-filter" data-aos="fade-up">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="data">Data Analysis</button>
+                <button class="filter-btn" data-filter="financial">Financial Analytics</button>
+                <button class="filter-btn" data-filter="tax">Tax Services</button>
+            </div>
+            <div class="portfolio-grid" data-aos="fade-up" data-aos-delay="200"></div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer id="contact">
+        <div class="container footer-content">
+            <div class="footer-logo">
+                <a href="#"><span>S</span>levin<span>.</span></a>
+            </div>
+
+            <div class="footer-copyright">
+                <p>&copy; 2025 Slevin Onono. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <a href="#" class="back-to-top" aria-label="Back to top"><i class="fas fa-chevron-up"></i></a>
+
+    <!-- Contact Modal -->
+    <div id="contactModal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-content">
+            <span class="close-modal" aria-label="Close contact modal">&times;</span>
+            <h2>Get In Touch</h2>
+            <form id="contactForm">
+                <div class="form-group">
+                    <input type="text" name="name" placeholder="Your Name" required aria-label="Your name">
+                </div>
+                <div class="form-group">
+                    <input type="email" name="email" id="about-email" placeholder="Your Email" required aria-label="Your email">
+                </div>
+                <div class="form-group">
+                    <textarea name="message" placeholder="Your Message" required aria-label="Your message"></textarea>
+                </div>
+                <button type="submit" class="btn ripple" aria-label="Send message">Send Message</button>
+            </form>
+            <div class="social-links">
+                <a href="#" aria-label="LinkedIn profile"><i class="fab fa-linkedin"></i></a>
+                <a href="#" aria-label="GitHub profile"><i class="fab fa-github"></i></a>
+                <a href="#" aria-label="Twitter profile"><i class="fab fa-twitter"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Project Modal -->
+    <div id="projectModal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-content project-modal-content">
+            <span class="close-modal" aria-label="Close project modal">&times;</span>
+            <img id="projectModalImage" src="" alt="Project image">
+            <h2 id="projectModalTitle"></h2>
+            <p id="projectModalDescription"></p>
+            <div class="project-modal-technologies">
+                <h3>Technologies:</h3>
+                <ul id="projectModalTechnologies"></ul>
+            </div>
+            <div class="project-modal-links">
+                <a id="projectModalLiveLink" href="#" target="_blank" class="btn ripple" aria-label="View live project">View Live</a>
+                <a id="projectModalCodeLink" href="#" target="_blank" class="btn secondary ripple" aria-label="View source code">View Code</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Skill Modal -->
+    <div id="skill-modal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-content">
+            <span class="close-modal" aria-label="Close skill modal">&times;</span>
+            <h4 id="modal-title"></h4>
+            <p id="modal-percentage"></p>
+            <p id="modal-details"></p>
+            <button class="btn ripple" aria-label="Close skill modal">Close</button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script src="static/js/script.js"></script>
+</body>
+</html>

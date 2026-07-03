@@ -1,0 +1,62 @@
+[
+    {
+        "id": "revenuetrend",
+        "title": "Revenue Trend Analysis",
+        "description": "Developed interactive Tableau dashboards to visualize revenue trends, improving decisionmaking by 30% during KRA internship.",
+        "image": "static/images/data_visualization.webp",
+        "category": "data",
+        "technologies": ["Tableau", "Excel", "SQL", "Streamlit", "React"],
+        "liveLink": "https://app-sales-dashboard-dy7t3qgwckyxpxfvc4rmrc.streamlit.app",
+        "codeLink": "https://github.com/Prolific144/streamlitsalesdashboard"
+    },
+    {
+        "id": "financialforecast",
+        "title": "Financial Forecasting Model",
+        "description": "Built a Pythonbased predictive model to forecast financial trends, enhancing budget planning accuracy.",
+        "image": "static/images/financial_dashboard.webp",
+        "category": "financial",
+        "technologies": ["Python", "Pandas", "Scikitlearn", "Flask", "Streamlit"],
+        "liveLink": "https://app-sales-dashboard-dy7t3qgwckyxpxfvc4rmrc.streamlit.app",
+        "codeLink": "https://github.com/Prolific144/streamlitsalesdashboard"
+    },
+    {
+        "id": "taxcompliance",
+        "title": "Tax Compliance System",
+        "description": "Streamlined tax filing processes using iTax System, reducing compliance errors by 25% at KRA.",
+        "image": "static/images/tax_compliance.webp",
+        "category": "tax",
+        "technologies": ["iTax System", "Excel", "SQL", "JavaScript"],
+        "liveLink": "#",
+        "codeLink": "#"
+    },
+    {
+        "id": "statisticalsurvey",
+        "title": "Statistical Survey Analysis",
+        "description": "Conducted survey analysis with R, providing actionable insights for client satisfaction strategies.",
+        "image": "static/images/statistical_analysis.webp",
+        "category": "data",
+        "technologies": ["R", "Excel", "SPSS", "Google Forms"],
+        "liveLink": "#",
+        "codeLink": "#"
+    },
+    {
+        "id": "costoptimization",
+        "title": "Cost Optimization Dashboard",
+        "description": "Created an Excelbased dashboard for cost tracking, saving 15% in operational expenses.",
+        "image": "static/images/cost_optimization.webp",
+        "category": "financial",
+        "technologies": ["Excel", "VBA", "Power BI", "Streamlit"],
+        "liveLink": "#",
+        "codeLink": "#"
+    },
+    {
+        "id": "taxaudit",
+        "title": "Tax Audit Workflow",
+        "description": "Designed an SQLdriven audit workflow, improving audit efficiency by 20% during KRA internship.",
+        "image": "static/images/tax_audit.webp",
+        "category": "tax",
+        "technologies": ["SQL", "Excel", "Power BI"],
+        "liveLink": "#",
+        "codeLink": "#"
+    }
+]
